@@ -1,0 +1,36 @@
+server:
+  port: ${SERVER_PORT:52001}
+
+spring:
+  sql:
+    init:
+      mode: never  # Disable automatic schema.sql execution
+  application:
+    name: reservation-pos-server
+  r2dbc:
+    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos?serverTimezone=Asia/Seoul}
+    username: ${DB_USERNAME:gijunpark}
+    password: ${DB_PASSWORD:park9832}
+    properties:
+      ssl: false
+      sslMode: DISABLED
+      connectionTimeZone: Asia/Seoul
+      useServerPrepareStatement: true
+      serverZoneId: Asia/Seoul
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+    
+  # Configuration for R2DBC database initialization
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.gijun.reservationpos: DEBUG
+    io.r2dbc: DEBUG
+    org.springframework.r2dbc: DEBUG
