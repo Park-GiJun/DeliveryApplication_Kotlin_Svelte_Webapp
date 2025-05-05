@@ -2,13 +2,12 @@ server:
   port: ${SERVER_PORT:52001}
 
 spring:
-  sql:
-    init:
-      mode: never  # Disable automatic schema.sql execution
   application:
-    name: reservation-pos-server
+    name: delivery-simulator
+  
+  # R2DBC MySQL 설정
   r2dbc:
-    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos?serverTimezone=Asia/Seoul}
+    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos}
     username: ${DB_USERNAME:gijunpark}
     password: ${DB_PASSWORD:park9832}
     properties:
@@ -16,21 +15,39 @@ spring:
       sslMode: DISABLED
       connectionTimeZone: Asia/Seoul
       useServerPrepareStatement: true
-      serverZoneId: Asia/Seoul
+  
+  # Redis 설정 (연결 실패 시 오류가 나지 않도록 설정)
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
+  
+  # Kafka 설정 (연결 실패 시 오류가 나지 않도록 설정)
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    consumer:
+      group-id: delivery-simulator
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      missing-topics-fatal: false
+  
+  # Jackson 설정
   jackson:
     serialization:
       write-dates-as-timestamps: false
     default-property-inclusion: non_null
-    
-  # Configuration for R2DBC database initialization
-  data:
-    r2dbc:
-      repositories:
-        enabled: true
 
+# 로깅 설정
 logging:
   level:
     root: INFO
-    com.gijun.reservationpos: DEBUG
+    com.gijun.backend: DEBUG
     io.r2dbc: DEBUG
     org.springframework.r2dbc: DEBUG
+    org.springframework.web: INFO
+    org.springframework.kafka: INFO
