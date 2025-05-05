@@ -17,11 +17,69 @@ const rider = ref({
 });
 
 // 주문 목록
-const orders = ref([]);
+const orders = ref([
+  // 테스트용 데이터
+  {
+    id: 'ORDER123456',
+    customerId: 'CUST001',
+    customerName: '홍길동',
+    customerAddress: '서울시 강남구 테헤란로 123, 101동 1505호',
+    store: '맛있는 치킨',
+    storeId: 'STORE001',
+    amount: 23000,
+    status: 'ASSIGNED',
+    estimatedTime: 15,
+    distance: 3.2
+  }
+]);
 
 // 상태 변경
 const changeStatus = (newStatus) => {
   rider.value.status = newStatus;
+  
+  // 오프라인으로 변경 시 현재 주문 처리
+  if (newStatus === 'OFFLINE' && rider.value.currentOrder) {
+    // 실제로는 서버에 상태 변경을 요청해야 함
+    rider.value.currentOrder = null;
+  }
+};
+
+// 주문 수락
+const acceptOrder = (orderId) => {
+  const orderIndex = orders.value.findIndex(order => order.id === orderId);
+  if (orderIndex !== -1) {
+    const order = orders.value[orderIndex];
+    rider.value.currentOrder = order;
+    rider.value.status = 'DELIVERING';
+    
+    // 주문 목록에서 제거
+    orders.value.splice(orderIndex, 1);
+  }
+};
+
+// 주문 거부
+const rejectOrder = (orderId) => {
+  const orderIndex = orders.value.findIndex(order => order.id === orderId);
+  if (orderIndex !== -1) {
+    // 주문 목록에서 제거
+    orders.value.splice(orderIndex, 1);
+  }
+};
+
+// 픽업 완료
+const pickupOrder = () => {
+  if (rider.value.currentOrder) {
+    rider.value.currentOrder.status = 'PICKED_UP';
+  }
+};
+
+// 배달 완료
+const completeDelivery = () => {
+  if (rider.value.currentOrder) {
+    // 실제로는 서버에 상태 변경을 요청해야 함
+    rider.value.currentOrder = null;
+    rider.value.status = 'AVAILABLE';
+  }
 };
 
 // 위치 변경 시뮬레이션
@@ -93,6 +151,7 @@ const simulateLocationChange = () => {
             'btn flex-1 text-sm',
             rider.status === 'DELIVERING' ? 'bg-blue-600 text-white' : 'bg-gray-200'
           ]"
+          :disabled="rider.currentOrder !== null"
         >
           배달 중
         </button>
@@ -143,12 +202,55 @@ const simulateLocationChange = () => {
         
         <div class="bg-white p-3 rounded mb-4">
           <div class="text-sm text-gray-500 mb-1">배달 주소</div>
-          <div>{{ rider.currentOrder.address }}</div>
+          <div>{{ rider.currentOrder.customerAddress }}</div>
         </div>
         
         <div class="flex space-x-3">
-          <button class="btn bg-green-500 text-white flex-1">픽업 완료</button>
-          <button class="btn bg-blue-500 text-white flex-1">배달 완료</button>
+          <button @click="pickupOrder" class="btn bg-green-500 text-white flex-1" 
+                  :disabled="rider.currentOrder.status === 'PICKED_UP'">
+            픽업 완료
+          </button>
+          <button @click="completeDelivery" class="btn bg-blue-500 text-white flex-1">
+            배달 완료
+          </button>
+        </div>
+      </div>
+      
+      <!-- 대기 중인 주문 목록 -->
+      <div v-else-if="orders.length > 0" class="space-y-4">
+        <div v-for="order in orders" :key="order.id" class="border rounded-lg overflow-hidden">
+          <div class="bg-yellow-100 px-4 py-2 flex justify-between items-center">
+            <div class="font-medium">새 배달 요청</div>
+            <div class="text-sm text-gray-600">{{ order.distance }}km</div>
+          </div>
+          
+          <div class="p-4">
+            <div class="mb-3">
+              <div class="font-medium">{{ order.store }}</div>
+              <div class="text-sm text-gray-600 mb-1">픽업지</div>
+            </div>
+            
+            <div class="border-t pt-3 mb-3">
+              <div class="text-sm text-gray-600 mb-1">배달지</div>
+              <div>{{ order.customerAddress }}</div>
+            </div>
+            
+            <div class="bg-gray-50 p-3 rounded mb-4 flex justify-between">
+              <div>
+                <div class="text-sm text-gray-500">배달료</div>
+                <div class="font-medium">₩{{ Math.round(order.distance * 2000).toLocaleString() }}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">예상 소요시간</div>
+                <div class="font-medium">{{ order.estimatedTime }}분</div>
+              </div>
+            </div>
+            
+            <div class="flex space-x-3">
+              <button @click="acceptOrder(order.id)" class="btn bg-green-500 text-white flex-1">수락</button>
+              <button @click="rejectOrder(order.id)" class="btn bg-red-500 text-white flex-1">거절</button>
+            </div>
+          </div>
         </div>
       </div>
       

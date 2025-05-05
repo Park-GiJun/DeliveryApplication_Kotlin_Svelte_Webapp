@@ -7,24 +7,27 @@ spring:
   
   # R2DBC MySQL 설정
   r2dbc:
-    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos}
-    username: ${DB_USERNAME:gijunpark}
-    password: ${DB_PASSWORD:park9832}
+    url: ${DB_URL:r2dbc:mysql://localhost:3306/delivery}
+    username: ${DB_USERNAME:dbuser}
+    password: ${DB_PASSWORD:dbpass}
     properties:
       ssl: false
       sslMode: DISABLED
-      connectionTimeZone: Asia/Seoul
+      connectionTimeZone: SERVER
+      serverZoneId: "+09:00"
       useServerPrepareStatement: true
   
-  # Redis 설정 (연결 실패 시 오류가 나지 않도록 설정)
+  # Redis 설정  
   data:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      username: ${REDIS_USERNAME:default}
+      password: ${REDIS_PASSWORD:}
       repositories:
         enabled: false
   
-  # Kafka 설정 (연결 실패 시 오류가 나지 않도록 설정)
+  # Kafka 설정
   kafka:
     bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
     consumer:
@@ -42,12 +45,6 @@ spring:
       write-dates-as-timestamps: false
     default-property-inclusion: non_null
 
-# 로깅 설정
+# 로깅 설정은 logback-spring.xml 파일에서 관리됩니다.
 logging:
-  level:
-    root: INFO
-    com.gijun.backend: DEBUG
-    io.r2dbc: DEBUG
-    org.springframework.r2dbc: DEBUG
-    org.springframework.web: INFO
-    org.springframework.kafka: INFO
+  config: classpath:logback-spring.xml

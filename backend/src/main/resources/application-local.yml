@@ -5,19 +5,10 @@ spring:
   sql:
     init:
       mode: never
-  r2dbc:
-    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos}
-    username: ${DB_USERNAME:gijunpark}
-    password: ${DB_PASSWORD:park9832}
-    properties:
-      ssl: false
-      sslMode: DISABLED
-      connectionTimeZone: Asia/Seoul
-      useServerPrepareStatement: true
 
-logging:
-  level:
-    root: INFO
-    com.gijun.reservationpos: DEBUG
-    io.r2dbc: DEBUG
-    org.springframework.r2dbc: DEBUG
+# 로컬 환경에서는 logback-spring.xml의 dev 프로필이 적용됩니다.
+# 로깅 레벨 설정:
+# - root: INFO
+# - com.gijun.backend: DEBUG
+# - io.r2dbc: DEBUG
+# - org.springframework.r2dbc: DEBUG
