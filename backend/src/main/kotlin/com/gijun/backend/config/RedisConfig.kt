@@ -2,6 +2,7 @@ package com.gijun.backend.config
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -14,6 +15,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
 @Configuration
+@ConditionalOnProperty(value = ["spring.data.redis.enabled"], havingValue = "true", matchIfMissing = true)
 class RedisConfig(
     @Value("\${spring.data.redis.host:localhost}") private val redisHost: String,
     @Value("\${spring.data.redis.port:6379}") private val redisPort: Int,
@@ -37,7 +39,11 @@ class RedisConfig(
         }
         
         logger.info("Redis 연결 설정: 호스트=${redisHost}, 포트=${redisPort}, 사용자=${redisUsername}")
-        return LettuceConnectionFactory(configuration)
+        
+        val factory = LettuceConnectionFactory(configuration)
+        // 연결 실패해도 계속 진행
+        factory.setValidateConnection(false)
+        return factory
     }
 
     @Bean

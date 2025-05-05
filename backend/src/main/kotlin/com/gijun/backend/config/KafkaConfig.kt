@@ -8,9 +8,9 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.config.TopicBuilder
@@ -20,6 +20,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 import org.springframework.stereotype.Component
 
 @Configuration
+@ConditionalOnProperty(value = ["spring.kafka.enabled"], havingValue = "true", matchIfMissing = true)
 class KafkaConfig(
     @Value("\${spring.kafka.bootstrap-servers:localhost:9092}") 
     private val bootstrapServers: String
@@ -32,6 +33,7 @@ class KafkaConfig(
 
     @Bean
     fun testTopic(): NewTopic {
+        logger.info("Kafka 테스트 토픽 생성: $TEST_TOPIC")
         return TopicBuilder.name(TEST_TOPIC)
             .partitions(1)
             .replicas(1)
@@ -40,6 +42,7 @@ class KafkaConfig(
 
     @Bean
     fun kafkaAdmin(): KafkaAdmin {
+        logger.info("Kafka 어드민 설정: $bootstrapServers")
         val configs = mapOf(
             AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers
         )
@@ -58,6 +61,7 @@ class KafkaConfig(
 
     @Bean
     fun kafkaTemplate(): KafkaTemplate<String, Any> {
+        logger.info("Kafka 템플릿 생성")
         return KafkaTemplate(producerFactory())
     }
 
@@ -78,6 +82,7 @@ class KafkaConfig(
 
     @Bean
     fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, Any> {
+        logger.info("Kafka 리스너 컨테이너 팩토리 생성")
         val factory = ConcurrentKafkaListenerContainerFactory<String, Any>()
         factory.consumerFactory = consumerFactory()
         return factory
@@ -85,10 +90,11 @@ class KafkaConfig(
 }
 
 @Component
+@ConditionalOnProperty(value = ["spring.kafka.enabled"], havingValue = "true", matchIfMissing = true)
 class KafkaTestConsumer {
     private val logger = LoggerFactory.getLogger(KafkaTestConsumer::class.java)
 
-    @KafkaListener(topics = [KafkaConfig.TEST_TOPIC], groupId = "delivery-test-group", autoStartup = "true")
+    @KafkaListener(topics = [KafkaConfig.TEST_TOPIC], groupId = "delivery-test-group", autoStartup = "false")
     fun listen(message: Map<String, Any>) {
         logger.info("Kafka 메시지 수신: $message")
     }

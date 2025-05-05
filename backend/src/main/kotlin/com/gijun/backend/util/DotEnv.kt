@@ -1,11 +1,11 @@
 package com.gijun.backend.util
 
+import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
-import javax.annotation.PostConstruct
 
 /**
  * .env 파일에서 환경 변수를 로드하는 유틸리티 클래스

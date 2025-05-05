@@ -2,13 +2,40 @@ server:
   port: ${SERVER_PORT:52001}
 
 spring:
-  sql:
-    init:
-      mode: never
+  application:
+    name: delivery-simulator
+  
+  # Redis 설정  
+  data:
+    redis:
+      enabled: ${REDIS_ENABLED:false}
+      host: ${REDIS_HOST:210.121.177.150}
+      port: ${REDIS_PORT:6379}
+      username: ${REDIS_USERNAME:default}
+      password: ${REDIS_PASSWORD:park983200}
+      repositories:
+        enabled: false
+  
+  # Kafka 설정
+  kafka:
+    enabled: ${KAFKA_ENABLED:false}
+    bootstrap-servers: ${KAFKA_SERVERS:210.121.177.150:9092}
+    consumer:
+      group-id: delivery-simulator
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      missing-topics-fatal: false
+      auto-startup: false
+  
+  # Jackson 설정
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
 
-# 로컬 환경에서는 logback-spring.xml의 dev 프로필이 적용됩니다.
-# 로깅 레벨 설정:
-# - root: INFO
-# - com.gijun.backend: DEBUG
-# - io.r2dbc: DEBUG
-# - org.springframework.r2dbc: DEBUG
+# 로깅 설정은 logback-spring.xml 파일에서 관리됩니다.
+logging:
+  config: classpath:logback-spring.xml

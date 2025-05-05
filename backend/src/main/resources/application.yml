@@ -5,11 +5,11 @@ spring:
   application:
     name: delivery-simulator
   
-  # R2DBC MySQL 설정
+  # R2DBC MySQL 설정 - 필수가 아닌 경우 비활성화 가능
   r2dbc:
-    url: ${DB_URL:r2dbc:mysql://localhost:3306/delivery}
-    username: ${DB_USERNAME:dbuser}
-    password: ${DB_PASSWORD:dbpass}
+    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos}
+    username: ${DB_USERNAME:gijunpark}
+    password: ${DB_PASSWORD:park9832}
     properties:
       ssl: false
       sslMode: DISABLED
@@ -17,19 +17,21 @@ spring:
       serverZoneId: "+09:00"
       useServerPrepareStatement: true
   
-  # Redis 설정  
+  # Redis 설정 - 필수가 아닌 경우 비활성화 가능  
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
+      enabled: ${REDIS_ENABLED:true}
+      host: ${REDIS_HOST:210.121.177.150}
       port: ${REDIS_PORT:6379}
       username: ${REDIS_USERNAME:default}
-      password: ${REDIS_PASSWORD:}
+      password: ${REDIS_PASSWORD:park983200}
       repositories:
         enabled: false
   
-  # Kafka 설정
+  # Kafka 설정 - 필수가 아닌 경우 비활성화 가능
   kafka:
-    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    enabled: ${KAFKA_ENABLED:true}
+    bootstrap-servers: ${KAFKA_SERVERS:210.121.177.150:9092}
     consumer:
       group-id: delivery-simulator
       auto-offset-reset: earliest
