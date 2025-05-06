@@ -4,10 +4,10 @@ import org.springframework.data.annotation.Id
 
 data class OrderItem(
     @Id
-    val id: Integer,
-    val orderId: Integer,
-    val menuId: Integer,
-    val quantity: Integer,
+    val id: Long,
+    val orderId: Long,
+    val menuId: Long,
+    val quantity: Long,
     val unitPrice: Double,
     val totalPrice: Double,
     val createdAt: String,

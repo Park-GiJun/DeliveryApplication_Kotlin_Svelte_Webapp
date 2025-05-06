@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 data class Customer(
     @Id
-    val id: Integer,
+    val id: Long,
     val name: String,
     val phone: String,
     val email: String,

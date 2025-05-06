@@ -6,10 +6,10 @@ import java.time.LocalDateTime
 
 data class Order(
     @Id
-    val id: Integer,
-    val customerId: Integer,
-    val storeId: Integer,
-    val addressId: Integer,
+    val id: Long,
+    val customerId: Long,
+    val storeId: Long,
+    val addressId: Long,
     val orderNumber: String,
     val orderStatus: OrderStatus,
     val orderTime: LocalDateTime,

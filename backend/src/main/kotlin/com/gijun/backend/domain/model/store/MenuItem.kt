@@ -6,8 +6,8 @@ import org.springframework.data.annotation.Id
 
 data class MenuItem(
     @Id
-    val id: Integer,
-    val categoryId: Integer,
+    val id: Long,
+    val categoryId: Long,
     val name: String,
     val description: String,
     val price: Double,

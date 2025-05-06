@@ -5,11 +5,11 @@ import org.springframework.data.annotation.Id
 
 data class MenuOption(
     @Id
-    val id: Integer,
-    val menuId: Integer,
+    val id: Long,
+    val menuId: Long,
     val name: String,
     val isRequired: Boolean,
-    val displayOrder: Integer,
+    val displayOrder: Int,
     val createdAt: String,
     val updatedAt: String,
     val deletedAt: String?,

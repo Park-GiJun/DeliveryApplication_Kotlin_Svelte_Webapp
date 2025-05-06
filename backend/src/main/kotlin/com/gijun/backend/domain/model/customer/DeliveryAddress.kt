@@ -6,8 +6,8 @@ import java.time.LocalDateTime
 
 data class DeliveryAddress(
     @Id
-    val id: Integer,
-    val customerId: Integer,
+    val id: Long,
+    val customerId: Long,
     val name: String,
     val address: String,
     val detailAddress: String,

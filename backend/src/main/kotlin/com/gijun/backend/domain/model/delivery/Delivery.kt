@@ -6,11 +6,11 @@ import java.time.LocalDateTime
 
 data class Delivery(
     @Id
-    val id: Integer,
-    val orderId: Integer,
-    val storeId: Integer,
-    val riderId: Integer,
-    val orderStatus: DeliveryStatus,
+    val id: Long,
+    val orderId: Long,
+    val storeId: Long,
+    val riderId: Long,
+    val deliveryStatus: DeliveryStatus,
     val createdAt: LocalDateTime,
     val assignedAt: LocalDateTime?,
     val pickUpAt: LocalDateTime?,
@@ -19,5 +19,7 @@ data class Delivery(
     val cancelledAt: LocalDateTime?,
     val destinationLongitude: Double,
     val destinationLatitude: Double,
-    val destinationAddress: String
+    val destinationAddress: String,
+    val estimatedDeliveryTime: LocalDateTime?,
+    val actualDeliveryTime: LocalDateTime?
 )

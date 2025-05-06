@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class Store(
     @Id
-    val id: Integer,
+    val id: Long,
     val name: String,
     val storeCategory: StoreCategory,
     val businessNumber: String,

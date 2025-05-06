@@ -6,7 +6,7 @@ import java.util.Date
 
 data class SystemStatus(
     @Id
-    val id: Integer,
+    val id: Long,
     val logDate: Date,
     val logTime: LocalDateTime,
     val webFluxStatus: Boolean,
