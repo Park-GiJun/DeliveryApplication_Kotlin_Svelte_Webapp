@@ -57,8 +57,8 @@ class OrderHandler(private val orderCommandService: OrderCommandService) {
             .flatMap { createOrderDto ->
                 orderCommandService.createOrder(createOrderDto)
                     .flatMap { order ->
-                        logger.info("주문 생성 성공: id=${order.id}")
-                        ServerResponse.created(URI.create("/api/orders/${order.id}"))
+                        logger.info("주문 생성 성공: orderNumber=${order.orderNumber}")
+                        ServerResponse.created(URI.create("/api/orders/${order.orderNumber}"))
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(order)
                     }
@@ -70,5 +70,97 @@ class OrderHandler(private val orderCommandService: OrderCommandService) {
                     "message" to (e.message ?: "주문 생성 중 오류가 발생했습니다")
                 ))
             }
+    }
+
+    /**
+     * 주문 번호로 주문을 조회합니다.
+     */
+    @Operation(
+        summary = "주문 조회",
+        description = "주문 번호로 주문을 조회합니다",
+        tags = ["orders"],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "주문 조회 성공",
+                content = [Content(schema = Schema(implementation = com.gijun.backend.application.dto.OrderResponseDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "주문을 찾을 수 없음"
+            )
+        ]
+    )
+    fun getOrderByNumber(request: ServerRequest): Mono<ServerResponse> {
+        val orderNumber = request.pathVariable("orderNumber")
+        logger.info("주문 조회 요청: orderNumber=$orderNumber")
+        
+        // 주문 조회 서비스는 아직 미구현
+        return ServerResponse.ok().bodyValue(mapOf(
+            "message" to "아직 구현되지 않은 기능입니다: 주문 조회",
+            "orderNumber" to orderNumber
+        ))
+    }
+
+    /**
+     * 고객 ID로 주문 목록을 조회합니다.
+     */
+    @Operation(
+        summary = "고객별 주문 목록 조회",
+        description = "고객 ID로 주문 목록을 조회합니다",
+        tags = ["orders"],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "주문 목록 조회 성공"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "고객을 찾을 수 없음"
+            )
+        ]
+    )
+    fun getOrdersByCustomer(request: ServerRequest): Mono<ServerResponse> {
+        val customerId = request.pathVariable("customerId")
+        logger.info("고객별 주문 목록 조회 요청: customerId=$customerId")
+        
+        // 고객별 주문 목록 조회 서비스는 아직 미구현
+        return ServerResponse.ok().bodyValue(mapOf(
+            "message" to "아직 구현되지 않은 기능입니다: 고객별 주문 목록 조회",
+            "customerId" to customerId
+        ))
+    }
+
+    /**
+     * 주문을 취소합니다.
+     */
+    @Operation(
+        summary = "주문 취소",
+        description = "주문 번호로 주문을 취소합니다",
+        tags = ["orders"],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "주문 취소 성공"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "주문을 찾을 수 없음"
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "취소할 수 없는 상태"
+            )
+        ]
+    )
+    fun cancelOrder(request: ServerRequest): Mono<ServerResponse> {
+        val orderNumber = request.pathVariable("orderNumber")
+        logger.info("주문 취소 요청: orderNumber=$orderNumber")
+        
+        // 주문 취소 서비스는 아직 미구현
+        return ServerResponse.ok().bodyValue(mapOf(
+            "message" to "아직 구현되지 않은 기능입니다: 주문 취소",
+            "orderNumber" to orderNumber
+        ))
     }
 }
