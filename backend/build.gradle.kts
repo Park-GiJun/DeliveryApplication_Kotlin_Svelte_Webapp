@@ -29,7 +29,13 @@ dependencies {
     
     // Kafka - 이벤트 처리
     implementation("org.springframework.kafka:spring-kafka")
-    
+
+
+    // OpenAPI/Swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
+
+
+
     // R2DBC + MySQL
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")

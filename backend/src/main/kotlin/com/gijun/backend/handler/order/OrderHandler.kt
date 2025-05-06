@@ -66,7 +66,7 @@ class OrderHandler(
                             .bodyValue(
                                 OrderResponseDTO(
                                     success = true,
-                                    orderId = order.id.toInt(),
+                                    orderId = order.id,
                                     orderNumber = order.orderNumber,
                                     message = "주문이 성공적으로 생성되었습니다."
                                 )
@@ -118,7 +118,7 @@ class OrderHandler(
      * 고객 ID로 주문 목록 조회
      */
     fun getOrdersByCustomer(request: ServerRequest): Mono<ServerResponse> {
-        val customerId = request.pathVariable("customerId").toInt()
+        val customerId = request.pathVariable("customerId").toLong()
         val page = request.queryParam("page").map { it.toInt() }.orElse(0)
         val size = request.queryParam("size").map { it.toInt() }.orElse(10)
         
@@ -176,7 +176,7 @@ class OrderHandler(
                             .bodyValue(
                                 OrderResponseDTO(
                                     success = true,
-                                    orderId = order.id.toInt(),
+                                    orderId = order.id,
                                     orderNumber = order.orderNumber,
                                     message = "주문이 취소되었습니다."
                                 )
