@@ -158,9 +158,25 @@ class OrderHandler(private val orderCommandService: OrderCommandService) {
         logger.info("주문 취소 요청: orderNumber=$orderNumber")
         
         // 주문 취소 서비스는 아직 미구현
-        return ServerResponse.ok().bodyValue(mapOf(
-            "message" to "아직 구현되지 않은 기능입니다: 주문 취소",
-            "orderNumber" to orderNumber
-        ))
+        return request.bodyToMono<Map<String, String>>()
+            .flatMap { body -> 
+                val reason = body["reason"] ?: "고객 요청에 의한 취소"
+                orderCommandService.cancelOrder(orderNumber, reason)
+                    .flatMap { order ->
+                        ServerResponse.ok().bodyValue(order)
+                    }
+            }
+            .switchIfEmpty(
+                orderCommandService.cancelOrder(orderNumber, "고객 요청에 의한 취소")
+                    .flatMap { order ->
+                        ServerResponse.ok().bodyValue(order)
+                    }
+            )
+            .onErrorResume { e ->
+                ServerResponse.badRequest().bodyValue(mapOf(
+                    "status" to "error",
+                    "message" to (e.message ?: "주문 취소 중 오류가 발생했습니다")
+                ))
+            }
     }
 }
