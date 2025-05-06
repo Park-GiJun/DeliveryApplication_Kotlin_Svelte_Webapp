@@ -1,16 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import CardComponent from '../components/common/CardComponent.vue';
 import WebSocketConsole from '../components/common/WebSocketConsole.vue';
 import { getWsBaseUrl } from '../utils/dateUtils';
+import axios from 'axios';
 
-// 고객 정보
-const customer = ref({
-  id: 'CUST001',
-  name: '홍길동',
-  address: '서울시 강남구 테헤란로 123',
-  phone: '010-1234-5678'
-});
+// 고객 목록
+const customers = ref([]);
+// 선택된 고객 인덱스
+const selectedCustomerIndex = ref(0);
+// 선택된 고객
+const selectedCustomer = ref(null);
 
 // 활성 주문
 const activeOrder = ref(null);
@@ -27,14 +27,35 @@ const orderForm = ref({
   deliveryFee: 3000
 });
 
+// 고객 목록 가져오기
+const fetchCustomers = async () => {
+  try {
+    const response = await axios.get('http://localhost:52001/api/customers/findAllCustomer');
+    customers.value = response.data;
+    if (customers.value.length > 0) {
+      selectCustomer(0);
+    }
+  } catch (error) {
+    console.error('고객 목록을 가져오는 중 오류 발생:', error);
+  }
+};
+
+// 고객 선택
+const selectCustomer = (index) => {
+  selectedCustomerIndex.value = index;
+  selectedCustomer.value = customers.value[index];
+  // 주문 정보 초기화
+  activeOrder.value = null;
+};
+
 // 주문하기
 const placeOrder = () => {
   // 여기서 실제로는 서버에 주문을 전송하게 됩니다
   activeOrder.value = {
     id: 'ORDER' + Date.now().toString().slice(-6),
-    customerId: customer.value.id,
-    customerName: customer.value.name,
-    customerAddress: customer.value.address,
+    customerId: selectedCustomer.value.id,
+    customerName: selectedCustomer.value.name,
+    customerAddress: '서울시 강남구', // 예시 데이터
     storeId: orderForm.value.storeId,
     storeName: orderForm.value.storeName,
     items: [...orderForm.value.items],
@@ -63,30 +84,62 @@ const getStatusText = (status) => {
     default: return '알 수 없음';
   }
 };
+
+// 컴포넌트 마운트 시 고객 목록 가져오기
+onMounted(() => {
+  fetchCustomers();
+});
 </script>
 
 <template>
   <div class="page-container">
     <h1 class="text-3xl font-bold mb-6">고객 앱</h1>
     
-    <!-- 고객 정보 -->
-    <CardComponent title="고객 정보">
+    <!-- 고객 탭 -->
+    <div class="mb-6">
+      <div class="flex overflow-x-auto space-x-1 border-b">
+        <button 
+          v-for="(customer, index) in customers" 
+          :key="customer.id"
+          @click="selectCustomer(index)"
+          :class="[
+            'px-4 py-2 whitespace-nowrap',
+            selectedCustomerIndex === index 
+              ? 'bg-blue-500 text-white rounded-t' 
+              : 'bg-gray-100 hover:bg-gray-200 rounded-t'
+          ]"
+        >
+          {{ customer.name }}
+        </button>
+      </div>
+    </div>
+    
+    <!-- 선택된 고객 정보 -->
+    <CardComponent v-if="selectedCustomer" title="고객 정보">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <div class="text-sm text-gray-500">이름</div>
-          <div class="font-medium">{{ customer.name }}</div>
+          <div class="font-medium">{{ selectedCustomer.name }}</div>
         </div>
         <div>
           <div class="text-sm text-gray-500">ID</div>
-          <div class="font-medium">{{ customer.id }}</div>
+          <div class="font-medium">{{ selectedCustomer.id }}</div>
         </div>
-        <div class="col-span-2">
-          <div class="text-sm text-gray-500">주소</div>
-          <div class="font-medium">{{ customer.address }}</div>
+        <div>
+          <div class="text-sm text-gray-500">이메일</div>
+          <div class="font-medium">{{ selectedCustomer.email }}</div>
         </div>
-        <div class="col-span-2">
+        <div>
           <div class="text-sm text-gray-500">연락처</div>
-          <div class="font-medium">{{ customer.phone }}</div>
+          <div class="font-medium">{{ selectedCustomer.phone }}</div>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500">계정 상태</div>
+          <div class="font-medium">{{ selectedCustomer.activatedStatus }}</div>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500">가입일</div>
+          <div class="font-medium">{{ selectedCustomer.createdAt ? `${selectedCustomer.createdAt[0]}-${selectedCustomer.createdAt[1]}-${selectedCustomer.createdAt[2]}` : '' }}</div>
         </div>
       </div>
     </CardComponent>
@@ -154,7 +207,7 @@ const getStatusText = (status) => {
     </CardComponent>
     
     <!-- 주문하기 -->
-    <CardComponent v-if="!activeOrder" title="주문하기" class="mt-6">
+    <CardComponent v-if="!activeOrder && selectedCustomer" title="주문하기" class="mt-6">
       <div class="bg-white p-4 rounded-lg border">
         <div class="font-semibold mb-3">{{ orderForm.storeName }}</div>
         
@@ -198,9 +251,9 @@ const getStatusText = (status) => {
     </CardComponent>
     
     <!-- 웹소켓 연결 -->
-    <div class="mt-6">
+    <div v-if="selectedCustomer" class="mt-6">
       <h2 class="text-xl font-bold mb-3">서버 연결</h2>
-      <WebSocketConsole :url="`${getWsBaseUrl()}/ws/events`" />
+      <WebSocketConsole :url="`${getWsBaseUrl()}/ws/customer/${selectedCustomer.id}`" />
     </div>
   </div>
 </template>

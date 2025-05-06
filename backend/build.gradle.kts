@@ -38,9 +38,10 @@ dependencies {
 
     // R2DBC + MySQL
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    implementation ("io.r2dbc:r2dbc-spi")
     implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
-    implementation("com.mysql:mysql-connector-j")
-    
+    implementation("io.r2dbc:r2dbc-pool:1.0.0.RELEASE") // 또는 더 높은 버전
+
     // Coroutines - 비동기 작업 처리
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
@@ -52,7 +53,8 @@ dependencies {
     // Base Dependencies
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     // Test Dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

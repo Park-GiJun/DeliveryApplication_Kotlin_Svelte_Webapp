@@ -18,23 +18,29 @@ const error = ref('');
 const connect = () => {
   try {
     socket.value = new WebSocket(props.url);
-    
+
     socket.value.onopen = () => {
       connected.value = true;
       error.value = '';
       addMessage('시스템', '웹소켓 연결이 설정되었습니다', 'success');
     };
-    
+
     socket.value.onmessage = (event) => {
       try {
         // JSON으로 파싱 시도
         const data = JSON.parse(event.data);
         addMessage('서버', data, 'received');
+
+        // 주문 데이터가 수신되면 부모 컴포넌트에 알림
+        if (data && (data.orderNumber || data.id)) {
+          emits('message-received', data);
+        }
       } catch (e) {
         // 일반 텍스트로 처리
         addMessage('서버', event.data, 'received');
       }
     };
+
     
     socket.value.onclose = () => {
       connected.value = false;

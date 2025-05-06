@@ -266,7 +266,7 @@ const simulateLocationChange = () => {
     <!-- 웹소켓 연결 -->
     <div class="mt-6">
       <h2 class="text-xl font-bold mb-3">서버 연결</h2>
-      <WebSocketConsole :url="`${getWsBaseUrl()}/ws/events`" />
+      <WebSocketConsole :url="`${getWsBaseUrl()}/ws/rider/1`" />
     </div>
   </div>
 </template>

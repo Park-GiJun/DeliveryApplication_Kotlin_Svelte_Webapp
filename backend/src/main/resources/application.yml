@@ -7,7 +7,7 @@ spring:
   
   # R2DBC MySQL 설정 - 필수가 아닌 경우 비활성화 가능
   r2dbc:
-    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/ReservationPos}
+    url: ${DB_URL:r2dbc:mysql://210.121.177.150:3306/delivery}
     username: ${DB_USERNAME:gijunpark}
     password: ${DB_PASSWORD:park9832}
     properties:

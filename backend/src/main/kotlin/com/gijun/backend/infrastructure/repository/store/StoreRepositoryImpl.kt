@@ -5,4 +5,6 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 
 class StoreRepositoryImpl(private val template: R2dbcEntityTemplate) : StoreRepository {
     private val logger = org.slf4j.LoggerFactory.getLogger(StoreRepositoryImpl::class.java)
+
+
 }

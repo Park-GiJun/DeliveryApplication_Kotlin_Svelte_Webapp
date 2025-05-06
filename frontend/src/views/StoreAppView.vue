@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import CardComponent from '../components/common/CardComponent.vue';
 import WebSocketConsole from '../components/common/WebSocketConsole.vue';
 import { getWsBaseUrl } from '../utils/dateUtils';
@@ -15,21 +15,6 @@ const store = ref({
 
 // 주문 목록
 const orders = ref([
-  {
-    id: 'ORDER123456',
-    customerId: 'CUST001',
-    customerName: '홍길동',
-    customerAddress: '서울시 강남구 테헤란로 123, 101동 1505호',
-    status: 'CREATED',
-    createdAt: new Date(Date.now() - 5 * 60000), // 5분 전
-    items: [
-      { id: 'ITEM001', name: '후라이드 치킨', price: 18000, quantity: 1 },
-      { id: 'ITEM002', name: '콜라', price: 2000, quantity: 1 }
-    ],
-    totalPrice: 20000,
-    deliveryFee: 3000,
-    riderId: null
-  }
 ]);
 
 // 메뉴 목록
@@ -97,12 +82,44 @@ const getElapsedTime = (createdAt) => {
   const elapsed = Math.floor((Date.now() - new Date(createdAt).getTime()) / 60000);
   return elapsed < 60 ? `${elapsed}분 전` : `${Math.floor(elapsed/60)}시간 ${elapsed%60}분 전`;
 };
+
+// 기존 코드 유지...
+
+// 웹소켓을 통한 주문 수신 처리
+const handleOrderReceived = (orderData) => {
+  console.log('새로운 주문 수신:', orderData);
+  
+  // 주문 정보를 주문 목록에 추가
+  if (orderData) {
+    // 주문 아이템 정보 가공 (실제 데이터가 있다면 가공, 없다면 빈 배열)
+    const orderItems = orderData.orderDetails || [];
+    
+    // 새 주문 객체 생성
+    const newOrder = {
+      id: orderData.orderNumber,
+      customerId: orderData.customerId || 'UNKNOWN',
+      customerName: '고객', // 실제로는 고객 정보를 가져와야 함
+      customerAddress: '배달 주소', // 실제로는 주소 정보를 가져와야 함
+      status: orderData.status,
+      createdAt: new Date(),
+      items: [
+        { id: 'ITEM001', name: '후라이드 치킨', price: 18000, quantity: 1 },
+        { id: 'ITEM002', name: '콜라', price: 2000, quantity: 1 }
+      ], // 임시 데이터, 실제 주문 항목으로 대체해야 함
+      totalAmount: orderData.totalAmount,
+      deliveryFee: orderData.deliveryFee
+    };
+    
+    // 주문 목록 맨 앞에 추가
+    orders.value.unshift(newOrder);
+  }
+};
 </script>
 
 <template>
   <div class="page-container">
     <h1 class="text-3xl font-bold mb-6">매장 앱</h1>
-    
+
     <!-- 매장 정보 -->
     <CardComponent title="매장 정보">
       <div class="flex justify-between items-center mb-4">
@@ -116,14 +133,14 @@ const getElapsedTime = (createdAt) => {
           store.status === 'CLOSED' ? 'bg-red-500' : '',
           store.status === 'BREAK' ? 'bg-yellow-500' : ''
         ]">
-          {{ 
-            store.status === 'OPEN' ? '영업중' : 
-            store.status === 'CLOSED' ? '영업종료' : 
+          {{
+            store.status === 'OPEN' ? '영업중' :
+            store.status === 'CLOSED' ? '영업종료' :
             '휴식중'
           }}
         </div>
       </div>
-      
+
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div class="bg-gray-50 p-3 rounded">
           <div class="text-sm text-gray-500">주소</div>
@@ -134,10 +151,10 @@ const getElapsedTime = (createdAt) => {
           <div class="font-medium">{{ store.phone }}</div>
         </div>
       </div>
-      
+
       <div class="flex space-x-2">
-        <button 
-          @click="changeStoreStatus('OPEN')" 
+        <button
+          @click="changeStoreStatus('OPEN')"
           :class="[
             'btn flex-1 text-sm',
             store.status === 'OPEN' ? 'bg-green-600 text-white' : 'bg-gray-200'
@@ -145,8 +162,8 @@ const getElapsedTime = (createdAt) => {
         >
           영업 시작
         </button>
-        <button 
-          @click="changeStoreStatus('BREAK')" 
+        <button
+          @click="changeStoreStatus('BREAK')"
           :class="[
             'btn flex-1 text-sm',
             store.status === 'BREAK' ? 'bg-yellow-600 text-white' : 'bg-gray-200'
@@ -154,8 +171,8 @@ const getElapsedTime = (createdAt) => {
         >
           휴식 시간
         </button>
-        <button 
-          @click="changeStoreStatus('CLOSED')" 
+        <button
+          @click="changeStoreStatus('CLOSED')"
           :class="[
             'btn flex-1 text-sm',
             store.status === 'CLOSED' ? 'bg-red-600 text-white' : 'bg-gray-200'
@@ -165,7 +182,7 @@ const getElapsedTime = (createdAt) => {
         </button>
       </div>
     </CardComponent>
-    
+
     <!-- 주문 목록 -->
     <CardComponent title="주문 목록" class="mt-6">
       <div v-if="orders.length === 0" class="text-center py-12 text-gray-500">
@@ -175,9 +192,9 @@ const getElapsedTime = (createdAt) => {
         <p class="text-lg mb-2">주문이 없습니다</p>
         <p class="text-sm">새로운 주문이 들어오면 여기에 표시됩니다</p>
       </div>
-      
+
       <div v-else class="space-y-4">
-        <div v-for="order in orders" :key="order.id" 
+        <div v-for="order in orders" :key="order.id"
              :class="[
                'border rounded-lg overflow-hidden',
                order.status === 'CREATED' ? 'border-yellow-500' : '',
@@ -206,13 +223,13 @@ const getElapsedTime = (createdAt) => {
               {{ getStatusText(order.status) }}
             </div>
           </div>
-          
+
           <div class="p-4">
             <div class="mb-3">
               <div class="font-medium">{{ order.customerName }}</div>
               <div class="text-sm text-gray-600">{{ order.customerAddress }}</div>
             </div>
-            
+
             <div class="space-y-2 mb-3">
               <div v-for="item in order.items" :key="item.id" class="flex justify-between">
                 <div>{{ item.name }} x{{ item.quantity }}</div>
@@ -223,12 +240,12 @@ const getElapsedTime = (createdAt) => {
                 <div>{{ (order.totalPrice + order.deliveryFee).toLocaleString() }}원</div>
               </div>
             </div>
-            
+
             <div class="flex space-x-2" v-if="order.status === 'CREATED'">
               <button @click="acceptOrder(order.id)" class="btn btn-success flex-1">주문 수락</button>
               <button @click="rejectOrder(order.id)" class="btn btn-danger flex-1">주문 거부</button>
             </div>
-            
+
             <div class="flex" v-if="order.status === 'ACCEPTED'">
               <button @click="completeOrder(order.id)" class="btn btn-primary w-full">조리 완료</button>
             </div>
@@ -236,7 +253,7 @@ const getElapsedTime = (createdAt) => {
         </div>
       </div>
     </CardComponent>
-    
+
     <!-- 메뉴 관리 -->
     <CardComponent title="메뉴 관리" class="mt-6">
       <div class="overflow-hidden border rounded-lg">
@@ -275,7 +292,7 @@ const getElapsedTime = (createdAt) => {
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button @click="toggleMenuAvailability(item.id)" 
+                <button @click="toggleMenuAvailability(item.id)"
                         :class="item.available ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'">
                   {{ item.available ? '품절로 변경' : '판매 시작' }}
                 </button>
@@ -285,11 +302,14 @@ const getElapsedTime = (createdAt) => {
         </table>
       </div>
     </CardComponent>
-    
-    <!-- 웹소켓 연결 -->
+
+    <!-- 웹소켓 연결 - 이벤트 수신 추가 -->
     <div class="mt-6">
       <h2 class="text-xl font-bold mb-3">서버 연결</h2>
-      <WebSocketConsole :url="`${getWsBaseUrl()}/ws/events`" />
+      <WebSocketConsole 
+        :url="`${getWsBaseUrl()}/ws/store/1`" 
+        @message-received="handleOrderReceived" 
+      />
     </div>
   </div>
 </template>

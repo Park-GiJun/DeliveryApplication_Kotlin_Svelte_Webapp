@@ -33,7 +33,7 @@ class CustomerNotificationWebSocketHandler(private val objectMapper: ObjectMappe
             return session.close()
         }
         
-        logger.info("고객 $customerId의 WebSocket 세션 연결됨: ID=${session.id}")
+        logger.info("고객 ${customerId}의 WebSocket 세션 연결됨: ID=${session.id}")
         
         // 고객 ID에 해당하는 세션 맵 가져오기
         val customerSessions = customerSessionsMap.computeIfAbsent(customerId) { ConcurrentHashMap() }
@@ -61,13 +61,13 @@ class CustomerNotificationWebSocketHandler(private val objectMapper: ObjectMappe
         
         return session.send(output)
             .doFinally { signal ->
-                logger.info("고객 $customerId의 WebSocket 세션 종료됨: ID=${session.id}, signal=$signal")
+                logger.info("고객 ${customerId}의 WebSocket 세션 종료됨: ID=${session.id}, signal=$signal")
                 customerSessions.remove(session.id)
                 
                 // 모든 세션이 종료되면 싱크도 제거
                 if (customerSessions.isEmpty()) {
                     customerSinksMap.remove(customerId)
-                    logger.info("고객 $customerId의 모든 세션이 종료되어 싱크를 제거합니다.")
+                    logger.info("고객 ${customerId}의 모든 세션이 종료되어 싱크를 제거합니다.")
                 }
             }
     }
@@ -106,14 +106,14 @@ class CustomerNotificationWebSocketHandler(private val objectMapper: ObjectMappe
      * 특정 고객에 이벤트를 전송합니다.
      */
     fun sendEventToCustomer(customerId: Long, event: Map<String, Any>) {
-        logger.debug("고객 $customerId에 이벤트 전송: $event")
+        logger.debug("고객 ${customerId}에 이벤트 전송: $event")
         
         val sink = customerSinksMap[customerId]
         if (sink != null) {
             sink.tryEmitNext(event)
-            logger.debug("고객 $customerId에 이벤트 전송 성공")
+            logger.debug("고객 ${customerId}에 이벤트 전송 성공")
         } else {
-            logger.warn("고객 $customerId에 연결된 세션이 없습니다.")
+            logger.warn("고객 ${customerId}에 연결된 세션이 없습니다.")
         }
     }
     

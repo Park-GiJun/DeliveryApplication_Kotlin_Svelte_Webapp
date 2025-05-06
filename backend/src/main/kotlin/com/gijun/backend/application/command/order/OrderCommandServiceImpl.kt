@@ -42,44 +42,45 @@ class OrderCommandServiceImpl(
         logger.info("주문 생성 시작: customerId=${createOrderDto.customerId}, storeId=${createOrderDto.storeId}")
         
         // 주문 번호 생성 (현재 날짜 + 시퀀스)
-        val orderNumber = generateOrderNumberWithRedis()
-        
-        // 총 금액 계산
-        val totalAmount = calculateTotalAmount(createOrderDto)
-        
-        // 배달비 설정 (실제로는 매장 정보에서 가져옴)
-        val deliveryFee = 3000.0
-        
-        // 할인 금액 (실제로는 프로모션 로직에서 계산)
-        val discountAmount = 0.0
-        
-        // 최종 결제 금액
-        val payedAmount = totalAmount + deliveryFee - discountAmount
-        
-        // 응답 DTO 생성
-        val orderResponseDto = OrderResponseDto(
-            id = 0, // 저장 후 실제 ID로 대체됨
-            orderNumber = orderNumber,
-            status = OrderStatus.CREATED,
-            orderTime = LocalDateTime.now(),
-            totalAmount = totalAmount,
-            deliveryFee = deliveryFee,
-            discountAmount = discountAmount,
-            payedAmount = payedAmount,
-            estimatedDeliveryMinutes = 30 // 기본 배달 시간
-        )
-        
-        // 주문 저장 및 응답
-        return orderRepository.saveOrder(createOrderDto, orderResponseDto)
-            .flatMap { savedOrder ->
-                logger.info("주문 생성 성공: orderNumber=${savedOrder.orderNumber}")
+        return generateOrderNumberWithRedis()
+            .flatMap { orderNumber ->
+                // 총 금액 계산
+                val totalAmount = calculateTotalAmount(createOrderDto)
                 
-                // 주문을 Redis에 저장
-                saveOrderToRedis(savedOrder)
-                    .then(addOrderToStoreQueue(createOrderDto.storeId, savedOrder.orderNumber))
-                    .then(publishOrderCreatedEvent(savedOrder))
-                    .then(sendOrderNotificationToStore(createOrderDto.storeId, savedOrder))
-                    .thenReturn(savedOrder)
+                // 배달비 설정 (실제로는 매장 정보에서 가져옴)
+                val deliveryFee = 3000.0
+                
+                // 할인 금액 (실제로는 프로모션 로직에서 계산)
+                val discountAmount = 0.0
+                
+                // 최종 결제 금액
+                val payedAmount = totalAmount + deliveryFee - discountAmount
+                
+                // 응답 DTO 생성
+                val orderResponseDto = OrderResponseDto(
+                    id = 0, // 저장 후 실제 ID로 대체됨
+                    orderNumber = orderNumber,
+                    status = OrderStatus.CREATED,
+                    orderTime = LocalDateTime.now(),
+                    totalAmount = totalAmount,
+                    deliveryFee = deliveryFee,
+                    discountAmount = discountAmount,
+                    payedAmount = payedAmount,
+                    estimatedDeliveryMinutes = 30 // 기본 배달 시간
+                )
+                
+                // 주문 저장 및 응답
+                orderRepository.saveOrder(createOrderDto, orderResponseDto)
+                    .flatMap { savedOrder ->
+                        logger.info("주문 생성 성공: orderNumber=${savedOrder.orderNumber}")
+                        
+                        // 주문을 Redis에 저장
+                        saveOrderToRedis(savedOrder)
+                            .then(addOrderToStoreQueue(createOrderDto.storeId, savedOrder.orderNumber))
+                            .then(publishOrderCreatedEvent(savedOrder))
+                            .then(sendOrderNotificationToStore(createOrderDto.storeId, savedOrder))
+                            .thenReturn(savedOrder)
+                    }
             }
             .doOnError { error ->
                 logger.error("주문 생성 실패: ${error.message}", error)
@@ -92,7 +93,7 @@ class OrderCommandServiceImpl(
      *
      * @return 생성된 주문 번호
      */
-    private fun generateOrderNumberWithRedis(): String {
+    private fun generateOrderNumberWithRedis(): Mono<String> {
         val dateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
         val orderSeqKey = "seq:order:$dateStr"
         
@@ -109,7 +110,7 @@ class OrderCommandServiceImpl(
                 val randomSeq = (Math.random() * 1000).toInt().toString().padStart(3, '0')
                 Mono.just("ORD-$dateStr-$randomSeq")
             }
-            .block() ?: "ORD-$dateStr-${(Math.random() * 1000).toInt().toString().padStart(3, '0')}"
+            .map { it ?: "ORD-$dateStr-${(Math.random() * 1000).toInt().toString().padStart(3, '0')}" }
     }
 
     /**

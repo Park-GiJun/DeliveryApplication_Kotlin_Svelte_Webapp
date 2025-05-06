@@ -33,7 +33,7 @@ class StoreNotificationWebSocketHandler(private val objectMapper: ObjectMapper) 
             return session.close()
         }
         
-        logger.info("매장 $storeId의 WebSocket 세션 연결됨: ID=${session.id}")
+        logger.info("매장 ${storeId}의 WebSocket 세션 연결됨: ID=${session.id}")
         
         // 매장 ID에 해당하는 세션 맵 가져오기
         val storeSessions = storeSessionsMap.computeIfAbsent(storeId) { ConcurrentHashMap() }
@@ -61,13 +61,13 @@ class StoreNotificationWebSocketHandler(private val objectMapper: ObjectMapper) 
         
         return session.send(output)
             .doFinally { signal ->
-                logger.info("매장 $storeId의 WebSocket 세션 종료됨: ID=${session.id}, signal=$signal")
+                logger.info("매장 ${storeId}의 WebSocket 세션 종료됨: ID=${session.id}, signal=$signal")
                 storeSessions.remove(session.id)
                 
                 // 모든 세션이 종료되면 싱크도 제거
                 if (storeSessions.isEmpty()) {
                     storeSinksMap.remove(storeId)
-                    logger.info("매장 $storeId의 모든 세션이 종료되어 싱크를 제거합니다.")
+                    logger.info("매장 ${storeId}의 모든 세션이 종료되어 싱크를 제거합니다.")
                 }
             }
     }
@@ -106,14 +106,14 @@ class StoreNotificationWebSocketHandler(private val objectMapper: ObjectMapper) 
      * 특정 매장에 이벤트를 전송합니다.
      */
     fun sendEventToStore(storeId: Long, event: Map<String, Any>) {
-        logger.debug("매장 $storeId에 이벤트 전송: $event")
+        logger.debug("매장 ${storeId}에 이벤트 전송: $event")
         
         val sink = storeSinksMap[storeId]
         if (sink != null) {
             sink.tryEmitNext(event)
-            logger.debug("매장 $storeId에 이벤트 전송 성공")
+            logger.debug("매장 ${storeId}에 이벤트 전송 성공")
         } else {
-            logger.warn("매장 $storeId에 연결된 세션이 없습니다.")
+            logger.warn("매장 ${storeId}에 연결된 세션이 없습니다.")
         }
     }
     
