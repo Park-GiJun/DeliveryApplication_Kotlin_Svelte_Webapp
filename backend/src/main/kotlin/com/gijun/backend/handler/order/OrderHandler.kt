@@ -1,202 +1,74 @@
 package com.gijun.backend.handler.order
 
-import com.gijun.backend.application.command.order.CreateOrderCommand
 import com.gijun.backend.application.command.order.OrderCommandService
-import com.gijun.backend.application.query.order.OrderQueryService
-import com.gijun.backend.domain.dto.order.OrderCancelRequestDTO
-import com.gijun.backend.domain.dto.order.OrderDetailResponseDTO
-import com.gijun.backend.domain.dto.order.OrderListResponseDTO
-import com.gijun.backend.domain.dto.order.OrderRequestDTO
-import com.gijun.backend.domain.dto.order.OrderResponseDTO
-import com.gijun.backend.domain.dto.order.OrderSummaryResponseDTO
+import com.gijun.backend.application.dto.CreateOrderDto
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.parameters.RequestBody
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.bodyToMono
 import reactor.core.publisher.Mono
+import java.net.URI
 
 /**
- * 주문 핸들러 - 웹 요청을 받아 적절한 애플리케이션 서비스로 전달
+ * 주문 처리를 위한 핸들러
  */
 @Component
-class OrderHandler(
-    private val orderQueryService: OrderQueryService,
-    private val orderCommandService: OrderCommandService
-) {
+class OrderHandler(private val orderCommandService: OrderCommandService) {
     private val logger = LoggerFactory.getLogger(OrderHandler::class.java)
 
     /**
-     * 주문 생성 요청 처리
+     * 새로운 주문을 생성합니다.
      */
+    @Operation(
+        summary = "주문 생성",
+        description = "새로운 주문을 생성합니다",
+        tags = ["orders"],
+        requestBody = RequestBody(
+            required = true,
+            content = [Content(schema = Schema(implementation = CreateOrderDto::class))]
+        ),
+        responses = [
+            ApiResponse(
+                responseCode = "201",
+                description = "주문 생성 성공",
+                content = [Content(schema = Schema(implementation = com.gijun.backend.application.dto.OrderResponseDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "잘못된 요청"
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "서버 오류"
+            )
+        ]
+    )
     fun createOrder(request: ServerRequest): Mono<ServerResponse> {
-        logger.info("주문 생성 요청 처리")
+        logger.info("주문 생성 요청 수신")
         
-        return request.bodyToMono(OrderRequestDTO::class.java)
-            .switchIfEmpty(Mono.error(IllegalArgumentException("요청 본문이 비어있습니다")))
-            .flatMap { orderRequestDTO ->
-                // DTO를 Command로 변환
-                val command = CreateOrderCommand(
-                    customerId = orderRequestDTO.customerId,
-                    storeId = orderRequestDTO.storeId,
-                    addressId = orderRequestDTO.addressId,
-                    items = orderRequestDTO.items.map { item ->
-                        CreateOrderCommand.OrderItemCommand(
-                            menuId = item.menuId,
-                            quantity = item.quantity,
-                            unitPrice = item.unitPrice,
-                            options = item.options?.map { option ->
-                                CreateOrderCommand.OrderItemOptionCommand(
-                                    optionItemId = option.optionItemId,
-                                    name = option.name,
-                                    price = option.price
-                                )
-                            } ?: emptyList()
-                        )
-                    },
-                    totalAmount = orderRequestDTO.totalAmount,
-                    deliveryFee = orderRequestDTO.deliveryFee,
-                    requestStore = orderRequestDTO.requestStore,
-                    requestRider = orderRequestDTO.requestRider
-                )
-                
-                // 커맨드 서비스 호출
-                orderCommandService.createOrder(command)
+        return request.bodyToMono<CreateOrderDto>()
+            .flatMap { createOrderDto ->
+                orderCommandService.createOrder(createOrderDto)
                     .flatMap { order ->
-                        ServerResponse.ok()
-                            .bodyValue(
-                                OrderResponseDTO(
-                                    success = true,
-                                    orderId = order.id,
-                                    orderNumber = order.orderNumber,
-                                    message = "주문이 성공적으로 생성되었습니다."
-                                )
-                            )
+                        logger.info("주문 생성 성공: id=${order.id}")
+                        ServerResponse.created(URI.create("/api/orders/${order.id}"))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .bodyValue(order)
                     }
             }
             .onErrorResume { e ->
-                logger.error("주문 생성 중 오류 발생: {}", e.message, e)
-                ServerResponse.badRequest()
-                    .bodyValue(
-                        OrderResponseDTO(
-                            success = false,
-                            orderId = null,
-                            orderNumber = null,
-                            message = "주문 생성 실패: ${e.message}"
-                        )
-                    )
-            }
-    }
-
-    /**
-     * 주문 번호로 주문 정보 조회
-     */
-    fun getOrderByNumber(request: ServerRequest): Mono<ServerResponse> {
-        val orderNumber = request.pathVariable("orderNumber")
-        logger.info("주문 조회 요청: {}", orderNumber)
-        
-        return orderQueryService.getOrderByNumber(orderNumber)
-            .flatMap { orderDetail ->
-                ServerResponse.ok()
-                    .bodyValue(OrderDetailResponseDTO.fromOrderDetail(orderDetail))
-            }
-            .switchIfEmpty(
-                ServerResponse.notFound().build()
-            )
-            .onErrorResume { e ->
-                logger.error("주문 조회 중 오류 발생: {}", e.message, e)
-                ServerResponse.badRequest()
-                    .bodyValue(
-                        OrderDetailResponseDTO(
-                            success = false,
-                            message = "주문 조회 실패: ${e.message}"
-                        )
-                    )
-            }
-    }
-
-    /**
-     * 고객 ID로 주문 목록 조회
-     */
-    fun getOrdersByCustomer(request: ServerRequest): Mono<ServerResponse> {
-        val customerId = request.pathVariable("customerId").toLong()
-        val page = request.queryParam("page").map { it.toInt() }.orElse(0)
-        val size = request.queryParam("size").map { it.toInt() }.orElse(10)
-        
-        logger.info("고객 {} 주문 목록 조회 요청 - page: {}, size: {}", customerId, page, size)
-        
-        return orderQueryService.getOrdersByCustomerId(customerId, page, size)
-            .collectList()
-            .flatMap { orders ->
-                ServerResponse.ok()
-                    .bodyValue(
-                        OrderListResponseDTO(
-                            success = true,
-                            orders = orders.map { OrderSummaryResponseDTO.fromOrderSummary(it) },
-                            message = "${orders.size}개의 주문이 조회되었습니다."
-                        )
-                    )
-            }
-            .switchIfEmpty(
-                ServerResponse.ok()
-                    .bodyValue(
-                        OrderListResponseDTO(
-                            success = true,
-                            orders = emptyList(),
-                            message = "주문 내역이 없습니다."
-                        )
-                    )
-            )
-            .onErrorResume { e ->
-                logger.error("주문 목록 조회 중 오류 발생: {}", e.message, e)
-                ServerResponse.badRequest()
-                    .bodyValue(
-                        OrderListResponseDTO(
-                            success = false,
-                            orders = emptyList(),
-                            message = "주문 목록 조회 실패: ${e.message}"
-                        )
-                    )
-            }
-    }
-
-    /**
-     * 주문 취소 처리
-     */
-    fun cancelOrder(request: ServerRequest): Mono<ServerResponse> {
-        val orderNumber = request.pathVariable("orderNumber")
-        
-        logger.info("주문 취소 요청: {}", orderNumber)
-        
-        return request.bodyToMono(OrderCancelRequestDTO::class.java)
-            .switchIfEmpty(Mono.just(OrderCancelRequestDTO("")))
-            .flatMap { cancelRequest ->
-                orderCommandService.cancelOrder(orderNumber, cancelRequest.reason)
-                    .flatMap { order ->
-                        ServerResponse.ok()
-                            .bodyValue(
-                                OrderResponseDTO(
-                                    success = true,
-                                    orderId = order.id,
-                                    orderNumber = order.orderNumber,
-                                    message = "주문이 취소되었습니다."
-                                )
-                            )
-                    }
-            }
-            .switchIfEmpty(
-                ServerResponse.notFound().build()
-            )
-            .onErrorResume { e ->
-                logger.error("주문 취소 중 오류 발생: {}", e.message, e)
-                ServerResponse.badRequest()
-                    .bodyValue(
-                        OrderResponseDTO(
-                            success = false,
-                            orderId = null,
-                            orderNumber = orderNumber,
-                            message = "주문 취소 실패: ${e.message}"
-                        )
-                    )
+                logger.error("주문 생성 실패: ${e.message}", e)
+                ServerResponse.badRequest().bodyValue(mapOf(
+                    "status" to "error",
+                    "message" to (e.message ?: "주문 생성 중 오류가 발생했습니다")
+                ))
             }
     }
 }
