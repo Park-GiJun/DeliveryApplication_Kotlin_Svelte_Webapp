@@ -1,5 +1,6 @@
 package com.gijun.backend.handler.store
 
+import com.gijun.backend.application.query.store.StoreQueryService
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -13,14 +14,14 @@ class StoreHandler(private val storeQueryService: StoreQueryService) {
     fun getAllStores(request: ServerRequest): Mono<ServerResponse> {
         logger.info("모든 매장 조회 요청")
         return storeQueryService.getAllStores()
-            .flatMap{stores->
+            .flatMap { stores ->
                 ServerResponse.ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(stores)
             }
     }
 
-    fun getStoreById(request:ServerRequest): Mono<ServerResponse> {
+    fun getStoreById(request: ServerRequest): Mono<ServerResponse> {
         val storeId = request.pathVariable("storeId").toLong()
         logger.info("매장 조회 요청: storeId=${storeId}")
 
@@ -30,6 +31,18 @@ class StoreHandler(private val storeQueryService: StoreQueryService) {
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(store)
             }
+    }
 
+    // 누락된 메서드 구현
+    fun getStoreMenu(request: ServerRequest): Mono<ServerResponse> {
+        val storeId = request.pathVariable("storeId").toLong()
+        logger.info("매장 메뉴 조회 요청: storeId=${storeId}")
+
+        return storeQueryService.getMenuByStoreId(storeId)
+            .flatMap { menuItems ->
+                ServerResponse.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(menuItems)
+            }
     }
 }
