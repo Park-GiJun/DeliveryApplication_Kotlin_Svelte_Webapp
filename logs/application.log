@@ -157,3 +157,234 @@
 2025-05-10 18:48:59.395 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=4caf7a6a-fcfe-4efa-86e5-a237a58c9921, type=INFO, timestamp=2025-05-10T18:48:59.395439300, message=테스트 이벤트 메시지: INFO}
 2025-05-10 18:49:02.389 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=abd582b8-e966-41b9-9d56-1e7549403677, type=UPDATE, timestamp=2025-05-10T18:49:02.389708, message=테스트 이벤트 메시지: UPDATE}
 2025-05-10 18:49:05.392 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=19ea6180-ea0a-4f91-ba73-8f851b61aa86, type=INFO, timestamp=2025-05-10T18:49:05.392771600, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:49:08.386 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=f2291d0e-62b6-4bd5-b2ef-434cf1de1f60, type=INFO, timestamp=2025-05-10T18:49:08.386970100, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:49:11.392 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=cd5d4463-da9f-41bd-abf8-d728cbea7a66, type=INFO, timestamp=2025-05-10T18:49:11.392191200, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:49:14.385 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e1673c49-56a2-49d8-bf89-8f156a84e9f7, type=INFO, timestamp=2025-05-10T18:49:14.385540900, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:49:17.385 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a7d59d22-6498-4f39-b526-a1f1aa08d4fd, type=UPDATE, timestamp=2025-05-10T18:49:17.385036600, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:49:20.396 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d750e35e-97bf-4ea5-a2e3-94c8c8c011ff, type=UPDATE, timestamp=2025-05-10T18:49:20.396939400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:49:23.394 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d4baf1ff-cba5-49b8-b768-886103d33790, type=ALERT, timestamp=2025-05-10T18:49:23.394641300, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:49:23.442 [reactor-http-nio-5] INFO  c.g.b.h.CustomerNotificationWebSocketHandler - 고객 1의 WebSocket 세션 종료됨: ID=687ed196, signal=onComplete
+2025-05-10 18:49:23.442 [reactor-http-nio-5] INFO  c.g.b.h.CustomerNotificationWebSocketHandler - 고객 1의 모든 세션이 종료되어 싱크를 제거합니다.
+2025-05-10 18:55:51.703 [main] INFO  c.gijun.backend.BackendApplicationKt - Starting BackendApplicationKt using Java 17.0.11 with PID 33224 (C:\Users\tpgj9\IdeaProjects\DeliveryApplication_Kotlin_Svelte_Webapp\backend\build\classes\kotlin\main started by tpgj9 in C:\Users\tpgj9\IdeaProjects\DeliveryApplication_Kotlin_Svelte_Webapp)
+2025-05-10 18:55:51.705 [main] DEBUG c.gijun.backend.BackendApplicationKt - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-05-10 18:55:51.706 [main] INFO  c.gijun.backend.BackendApplicationKt - The following 1 profile is active: "dev"
+2025-05-10 18:55:52.836 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-10 18:55:52.839 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data R2DBC repositories in DEFAULT mode.
+2025-05-10 18:55:52.871 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 29 ms. Found 0 R2DBC repository interfaces.
+2025-05-10 18:55:53.432 [main] INFO  c.gijun.backend.config.RedisConfig - Redis 연결 설정: 호스트=210.121.177.150, 포트=6379, 사용자=default
+2025-05-10 18:55:53.708 [main] INFO  c.gijun.backend.config.KafkaConfig - Kafka 템플릿 생성
+2025-05-10 18:55:54.047 [main] INFO  c.g.b.h.EventStreamWebSocketHandler - 이벤트 스트림 웹소켓 핸들러 초기화 - 3초마다 테스트 이벤트 생성
+2025-05-10 18:55:54.081 [main] WARN  com.gijun.backend.util.DotEnv - .env 파일을 찾을 수 없습니다. 시스템 환경 변수나 기본값을 사용합니다.
+2025-05-10 18:55:54.081 [main] INFO  c.g.b.adapter.ConnectionTestRouter - ConnectionTest 라우터 초기화
+2025-05-10 18:55:54.098 [main] INFO  c.g.b.adapter.ConnectionTestRouter - ConnectionTest 라우터 설정 완료: /api/connection-test/*
+2025-05-10 18:55:54.099 [main] INFO  c.g.b.a.customer.CustomerAdapter - 고객 어댑터 라우터 초기화
+2025-05-10 18:55:54.100 [main] INFO  c.g.b.adapter.order.OrderAdapter - 주문 어댑터 라우터 초기화
+2025-05-10 18:55:54.103 [main] INFO  c.g.b.adapter.order.OrderAdapter - 주문 API 라우팅 설정 완료: /api/orders
+2025-05-10 18:55:54.103 [main] INFO  c.g.b.adapter.order.OrderTestAdapter - 주문 테스트 어댑터 라우터 초기화
+2025-05-10 18:55:54.104 [main] INFO  c.g.b.adapter.order.OrderTestAdapter - 주문 테스트 API 라우팅 설정 완료: /api/test/orders
+2025-05-10 18:55:54.105 [main] INFO  c.g.b.adapter.store.StoreAdapter - 매장 어댑터 라우터 초기화
+2025-05-10 18:55:54.107 [main] INFO  c.g.b.adapter.store.StoreAdapter - 매장 API 라우팅 설정 완료: /api/stores
+2025-05-10 18:55:54.107 [main] INFO  c.g.backend.adapter.TestDataAdapter - 테스트 데이터 API 라우터 초기화
+2025-05-10 18:55:54.110 [main] INFO  c.g.backend.adapter.TestDataAdapter - 테스트 데이터 API 라우팅 설정 완료: /api/test/data
+2025-05-10 18:55:54.110 [main] INFO  c.g.b.adapter.test.TestMenuAdapter - 테스트 메뉴 API 라우터 초기화
+2025-05-10 18:55:54.111 [main] INFO  c.g.b.adapter.test.TestMenuAdapter - 테스트 메뉴 API 라우팅 설정 완료: /api/test/menus
+2025-05-10 18:55:54.112 [main] INFO  c.g.b.config.DatabaseInitializer - 데이터베이스 초기화 모드: never
+2025-05-10 18:55:54.113 [main] INFO  c.gijun.backend.config.KafkaConfig - Kafka 테스트 토픽 생성: delivery.test
+2025-05-10 18:55:54.115 [main] INFO  c.gijun.backend.config.KafkaConfig - Kafka 어드민 설정: 210.121.177.150:9092
+2025-05-10 18:55:54.124 [main] INFO  c.gijun.backend.config.KafkaConfig - Kafka 리스너 컨테이너 팩토리 생성
+2025-05-10 18:55:54.207 [main] INFO  c.gijun.backend.config.WebFluxConfig - CORS 설정 적용: 모든 오리진 허용
+2025-05-10 18:55:54.301 [main] INFO  c.g.backend.config.WebSocketConfig - WebSocket 핸들러 매핑 설정: [/ws/store/{storeId}, /ws/events, /ws/echo, /ws/rider/{riderId}, /ws/customer/{customerId}]
+2025-05-10 18:55:54.424 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-05-10 18:55:54.756 [main] INFO  o.a.k.c.admin.AdminClientConfig - AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.servers = [210.121.177.150:9092]
+	client.dns.lookup = use_all_dns_ips
+	client.id = 
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2025-05-10 18:55:54.807 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.6.1
+2025-05-10 18:55:54.808 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: 5e3c2b738d253ff5
+2025-05-10 18:55:54.808 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1746870954806
+2025-05-10 18:55:55.146 [kafka-admin-client-thread | adminclient-1] INFO  o.a.kafka.common.utils.AppInfoParser - App info kafka.admin.client for adminclient-1 unregistered
+2025-05-10 18:55:55.149 [kafka-admin-client-thread | adminclient-1] INFO  o.a.kafka.common.metrics.Metrics - Metrics scheduler closed
+2025-05-10 18:55:55.149 [kafka-admin-client-thread | adminclient-1] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2025-05-10 18:55:55.149 [kafka-admin-client-thread | adminclient-1] INFO  o.a.kafka.common.metrics.Metrics - Metrics reporters closed
+2025-05-10 18:55:55.281 [main] INFO  o.s.b.w.e.netty.NettyWebServer - Netty started on port 52001
+2025-05-10 18:55:55.294 [main] INFO  c.gijun.backend.BackendApplicationKt - Started BackendApplicationKt in 4.157 seconds (process running for 4.9)
+2025-05-10 18:55:56.417 [reactor-tcp-nio-2] DEBUG io.r2dbc.pool.ConnectionPool - Obtaining new connection from the pool
+2025-05-10 18:55:56.430 [reactor-tcp-nio-2] DEBUG io.r2dbc.pool.PooledConnection - Releasing connection
+2025-05-10 18:55:57.063 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=6b01d0d4-4cf2-4b8c-88b8-01345ca0d51a, type=UPDATE, timestamp=2025-05-10T18:55:57.063568800, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:56:00.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=93c6daee-0c0a-4fb9-bae5-c2813227564d, type=INFO, timestamp=2025-05-10T18:56:00.060323400, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:03.055 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=88f16325-f8a2-4b66-9be1-cb5c5839bb9c, type=INFO, timestamp=2025-05-10T18:56:03.055984, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:06.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=4d2efe27-07f4-4641-9fcc-639ec3a716b8, type=INFO, timestamp=2025-05-10T18:56:06.062655800, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:09.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=77c2223e-de2a-42cf-937d-f07fc3bd615c, type=ALERT, timestamp=2025-05-10T18:56:09.068127800, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:56:12.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=9af0dacf-f4f7-4cf8-b5f8-df9f4a9c8650, type=ALERT, timestamp=2025-05-10T18:56:12.068468, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:56:15.057 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d1143b9b-e28f-46c7-a90c-3e5d32afbad8, type=UPDATE, timestamp=2025-05-10T18:56:15.057221200, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:56:18.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=cc6a866e-6ae8-4f14-a132-81e4a490f5a0, type=INFO, timestamp=2025-05-10T18:56:18.061105600, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:21.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=3e7db255-c25c-4391-9ec0-7b094edf0305, type=ALERT, timestamp=2025-05-10T18:56:21.067444600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:56:24.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=633bd56e-14c9-47d7-8e9e-1631b2a78795, type=ALERT, timestamp=2025-05-10T18:56:24.056740400, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:56:27.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e52ccfbc-5c0b-497c-9577-89b63e7ec5da, type=ALERT, timestamp=2025-05-10T18:56:27.066984100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:56:30.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=cd63feb9-4c59-4af0-8007-9798dcf90bc7, type=UPDATE, timestamp=2025-05-10T18:56:30.066428, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:56:33.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=3b056dec-933e-4cc2-98b2-723eddd5916d, type=UPDATE, timestamp=2025-05-10T18:56:33.067084500, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:56:36.058 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=682a6828-58c8-42a0-8b53-155a7308a791, type=UPDATE, timestamp=2025-05-10T18:56:36.058240900, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:56:39.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=12018967-2a25-480c-97ed-5d0d87413910, type=INFO, timestamp=2025-05-10T18:56:39.061403, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:42.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=bc1c88bd-2968-4c7a-8572-e7c210b7476d, type=UPDATE, timestamp=2025-05-10T18:56:42.068395400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:56:45.055 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=9532696a-ec5c-433e-b261-41ed6cdc6f0a, type=INFO, timestamp=2025-05-10T18:56:45.055990200, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:48.063 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=05cc1e7d-a161-4a8e-97ee-c4f15221a1cd, type=INFO, timestamp=2025-05-10T18:56:48.063395600, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:51.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=2ce5494e-4a59-42a7-8e52-280c6c57e581, type=INFO, timestamp=2025-05-10T18:56:51.060254400, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:54.058 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=815389f1-c669-4829-ac72-1924efd178c2, type=INFO, timestamp=2025-05-10T18:56:54.058239, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:56:57.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=13041075-f1ee-4a23-aeac-8d5649168142, type=ALERT, timestamp=2025-05-10T18:56:57.062715800, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:00.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=721c4d09-127d-4981-992d-3d6ab54b2c0f, type=ALERT, timestamp=2025-05-10T18:57:00.061534100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:03.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=c71efe54-986e-480a-9c15-b6cf0776b7f6, type=INFO, timestamp=2025-05-10T18:57:03.067781800, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:57:06.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=19cced01-3f4e-4882-b9c9-37e290e4ebb7, type=UPDATE, timestamp=2025-05-10T18:57:06.061818300, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:09.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=bbe086b5-e7ab-43dd-b11a-b9cdca5eb181, type=UPDATE, timestamp=2025-05-10T18:57:09.056912200, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:12.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a4baade2-5803-4178-83e2-57fd768fa269, type=ALERT, timestamp=2025-05-10T18:57:12.066514800, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:15.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d81518ac-d804-4eb9-b625-a810ff015179, type=UPDATE, timestamp=2025-05-10T18:57:15.069644600, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:18.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=98d8d756-745d-4030-bc64-3dcc3eb09f12, type=ALERT, timestamp=2025-05-10T18:57:18.066985800, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:21.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=dde76e14-4707-437f-aaac-0187d94715a8, type=INFO, timestamp=2025-05-10T18:57:21.062668300, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:57:24.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=debb69a7-86c6-4a6f-b501-ac1b2e2f9811, type=UPDATE, timestamp=2025-05-10T18:57:24.061169500, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:27.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=28ece327-ca6d-4ae4-afd8-0ba2d5a71625, type=UPDATE, timestamp=2025-05-10T18:57:27.056924700, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:30.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=6dcd7ca7-0baa-4cb6-b593-c6146c4bcaae, type=ALERT, timestamp=2025-05-10T18:57:30.060235400, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:33.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=593bcf33-fd9f-4158-bbcf-65f2a721d97d, type=UPDATE, timestamp=2025-05-10T18:57:33.069931, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:36.057 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=3481a492-7d29-43c2-911f-0d2463271f62, type=ALERT, timestamp=2025-05-10T18:57:36.057848900, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:39.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=6d905716-f2a1-406c-9778-327a18943489, type=UPDATE, timestamp=2025-05-10T18:57:39.064948400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:42.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=036a2c09-0a02-4364-87c1-0f981869d04b, type=ALERT, timestamp=2025-05-10T18:57:42.056602200, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:45.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=43627825-7fae-419a-9716-6597a0de9ffb, type=UPDATE, timestamp=2025-05-10T18:57:45.056825300, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:48.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=1728b3f3-7604-47a6-8b6c-971d9d6b3e53, type=ALERT, timestamp=2025-05-10T18:57:48.062153500, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:51.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=ea3df00c-7507-410e-8144-733ab78ea86a, type=ALERT, timestamp=2025-05-10T18:57:51.066625, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:57:54.055 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=c6fea9b3-401e-4570-b3f5-b476baed0122, type=UPDATE, timestamp=2025-05-10T18:57:54.055166500, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:57:57.057 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a7676afb-3d07-484d-9a9c-16e7c700f2ca, type=ALERT, timestamp=2025-05-10T18:57:57.057312600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:00.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=23ef7924-25b8-474a-84af-cb0f87a335f6, type=ALERT, timestamp=2025-05-10T18:58:00.064922700, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:03.055 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=72f5d0a1-1763-4762-a93a-da5fdda3b9e6, type=UPDATE, timestamp=2025-05-10T18:58:03.055825400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:58:06.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=290c805b-98c5-4fe3-a7d3-e20f64a35a77, type=ALERT, timestamp=2025-05-10T18:58:06.056717100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:09.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=ba157882-be15-43d2-9ce3-5526a292a39f, type=INFO, timestamp=2025-05-10T18:58:09.061022200, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:58:12.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=43ee1eb6-b848-4d21-ba14-607c9ea26f7f, type=INFO, timestamp=2025-05-10T18:58:12.069911700, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:58:15.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=9609a670-b1cb-4c7d-9eef-6f4a6e4217d1, type=ALERT, timestamp=2025-05-10T18:58:15.067105100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:18.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=02649f87-ffb0-4291-80ce-04bf5699299e, type=UPDATE, timestamp=2025-05-10T18:58:18.062521400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:58:21.065 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=04cebe3e-ecf9-4794-9be4-39b2db4806d6, type=ALERT, timestamp=2025-05-10T18:58:21.065488300, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:24.065 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=8c1a7de2-72f6-41c2-8fbc-4a2180a139be, type=ALERT, timestamp=2025-05-10T18:58:24.065585200, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:27.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=87a5c46a-a8be-4cfe-b0b3-610987bf1505, type=ALERT, timestamp=2025-05-10T18:58:27.062369300, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:30.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e82e4e29-53db-46e9-8c8d-38b673e8719a, type=ALERT, timestamp=2025-05-10T18:58:30.066897700, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:33.065 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a28b00d8-28ba-4c3c-9cc4-7c7250baaf59, type=ALERT, timestamp=2025-05-10T18:58:33.065203600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:36.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=666e83e1-184a-49fc-bbfc-4101d7d9068a, type=UPDATE, timestamp=2025-05-10T18:58:36.061989100, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:58:39.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=f2454d12-8ff1-439e-a4fa-dabe0d5848b8, type=UPDATE, timestamp=2025-05-10T18:58:39.069723200, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:58:42.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=edba1764-00de-442d-af92-0425b01b9e63, type=INFO, timestamp=2025-05-10T18:58:42.066275500, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:58:45.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=7350de7f-7275-4014-ba62-8b40680c39d6, type=UPDATE, timestamp=2025-05-10T18:58:45.067281800, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:58:48.059 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=89a02ad8-9dc8-4595-9635-a53052946907, type=ALERT, timestamp=2025-05-10T18:58:48.059571400, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:51.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=7baf5958-ad3e-466a-8eee-35e071e80d18, type=UPDATE, timestamp=2025-05-10T18:58:51.060489900, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:58:54.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e2057eb8-187e-47ec-a651-37a1b7c041ee, type=ALERT, timestamp=2025-05-10T18:58:54.064646200, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:58:57.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e397b171-8bf7-4cc9-95c6-30e4603c0d7a, type=INFO, timestamp=2025-05-10T18:58:57.061366500, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:59:00.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=29692e85-5384-48c6-8eff-5babbc76ae0c, type=ALERT, timestamp=2025-05-10T18:59:00.069367200, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:03.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=5750297e-6bb7-4d4c-9280-a8b354f7121e, type=INFO, timestamp=2025-05-10T18:59:03.056586500, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:59:06.059 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=6cac6819-c983-4774-a20b-b9803d6beec7, type=ALERT, timestamp=2025-05-10T18:59:06.059579, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:09.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d74155f9-ecf0-4d98-9d49-dbfbf1eb4e95, type=ALERT, timestamp=2025-05-10T18:59:09.061548900, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:12.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=9c51528d-9397-48e7-aaf6-7d7b1bec6e2a, type=ALERT, timestamp=2025-05-10T18:59:12.069261800, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:15.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=686593ed-2177-483e-83c4-5ac1c1f1fd64, type=ALERT, timestamp=2025-05-10T18:59:15.064025600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:18.058 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e7a5cfc4-f8ed-4744-b93b-744f03eea5d6, type=UPDATE, timestamp=2025-05-10T18:59:18.058580400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:21.062 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=4d522a09-a0e0-4961-82af-be4b853ed519, type=ALERT, timestamp=2025-05-10T18:59:21.062693200, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:24.077 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=c5b6ce49-cfb3-480b-a269-45e400775831, type=INFO, timestamp=2025-05-10T18:59:24.077982700, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:59:27.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=fe618eec-7974-4871-87b5-7be6665aea6d, type=UPDATE, timestamp=2025-05-10T18:59:27.067203300, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:30.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=8d3099fb-38d3-4e79-88a2-a3cb9a368e17, type=UPDATE, timestamp=2025-05-10T18:59:30.067062200, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:33.059 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a5fcd823-38d7-4686-acc0-ea3cb95a6cd3, type=ALERT, timestamp=2025-05-10T18:59:33.059961500, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:36.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=12319272-e690-4e8d-9248-cc1f479643e6, type=UPDATE, timestamp=2025-05-10T18:59:36.067986900, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:39.055 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=73ba25ac-0f94-4e19-a6f5-e25fd87ffbbc, type=ALERT, timestamp=2025-05-10T18:59:39.055398500, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 18:59:42.057 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=ca26124e-b8b3-4e4a-be7c-d2a3190f424d, type=UPDATE, timestamp=2025-05-10T18:59:42.057166200, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:45.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=2156fe4a-ffe5-49b1-bd8a-050e541c6fb2, type=UPDATE, timestamp=2025-05-10T18:59:45.068384600, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:48.055 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=c4db7585-ed9a-4b1d-9c7a-36beae777c90, type=INFO, timestamp=2025-05-10T18:59:48.055136800, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:59:51.059 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=4181d25b-3423-46fd-a61e-0c387e226012, type=INFO, timestamp=2025-05-10T18:59:51.059657900, message=테스트 이벤트 메시지: INFO}
+2025-05-10 18:59:54.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a8824936-f690-49b8-8f4c-975ff4919971, type=UPDATE, timestamp=2025-05-10T18:59:54.060014900, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 18:59:57.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=fba01424-577e-46e8-a44a-cf97da953c4d, type=UPDATE, timestamp=2025-05-10T18:59:57.069506100, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:00:00.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=a48bafba-deff-4a8a-880e-cd52de4bf300, type=ALERT, timestamp=2025-05-10T19:00:00.066224400, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:03.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=98682bec-f3fd-437b-876c-7db53e5925f2, type=UPDATE, timestamp=2025-05-10T19:00:03.064713600, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:00:06.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d3d328e4-8a86-4d9c-8083-008769d562a0, type=ALERT, timestamp=2025-05-10T19:00:06.064899100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:09.067 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=77a1b03e-7324-4660-a828-a0599a50ec1c, type=INFO, timestamp=2025-05-10T19:00:09.067423400, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:00:12.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=3a5a5ea3-6dae-4f33-bdd9-1d235e98f504, type=UPDATE, timestamp=2025-05-10T19:00:12.066822800, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:00:15.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=5eb00bf0-a3a6-486a-a668-ab07d9b5662b, type=INFO, timestamp=2025-05-10T19:00:15.068781200, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:00:18.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=c03c1486-f111-418f-a4ef-5514677e5c4c, type=ALERT, timestamp=2025-05-10T19:00:18.060847600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:21.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=fa39326a-26b6-4894-adda-814e2937e8d1, type=UPDATE, timestamp=2025-05-10T19:00:21.066625600, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:00:24.063 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d84f73a1-bba5-46f7-acaa-5c4776654ee4, type=INFO, timestamp=2025-05-10T19:00:24.063245300, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:00:27.063 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=b792740d-b119-46ae-bbbe-e3ded719e845, type=INFO, timestamp=2025-05-10T19:00:27.063965, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:00:30.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=d0118637-cca4-4ce2-9da1-7c5d45808550, type=ALERT, timestamp=2025-05-10T19:00:30.066330, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:33.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=76ed3108-cf97-40ca-817e-5256090f3ca6, type=ALERT, timestamp=2025-05-10T19:00:33.068631600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:36.056 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=b1526631-4d47-40d2-a0ed-cb0da5f7c50d, type=INFO, timestamp=2025-05-10T19:00:36.056071700, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:00:39.059 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=45fb9d7c-d2d5-4bd9-9c97-62977049f3dd, type=ALERT, timestamp=2025-05-10T19:00:39.059482100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:42.068 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=9c0cd0ab-f8ab-491c-8bf3-f05757949583, type=ALERT, timestamp=2025-05-10T19:00:42.068172300, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:45.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=16af48b5-92a1-48b1-b996-8a22c21cba29, type=ALERT, timestamp=2025-05-10T19:00:45.064904500, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:48.057 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=f609786a-84e5-41f5-b140-35a0c1338584, type=UPDATE, timestamp=2025-05-10T19:00:48.057430300, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:00:51.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=026dd272-0936-4c94-afec-4d0e2fa5442e, type=INFO, timestamp=2025-05-10T19:00:51.066380700, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:00:54.066 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=ee67bde2-eb96-4c4d-b42a-ab88a0730c05, type=ALERT, timestamp=2025-05-10T19:00:54.066048100, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:00:57.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=99c562eb-a140-4fa3-a1b6-bec3d4da3bf5, type=ALERT, timestamp=2025-05-10T19:00:57.060757300, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:01:00.069 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=eed29d0d-c918-40fe-8a0f-6aa64e105691, type=UPDATE, timestamp=2025-05-10T19:01:00.069019600, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:01:03.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=e31a8d3e-3b3e-4a19-a32b-da3de1ea54b1, type=ALERT, timestamp=2025-05-10T19:01:03.061284600, message=테스트 이벤트 메시지: ALERT}
+2025-05-10 19:01:06.058 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=0690d59f-5854-4ca3-a9a9-dccae2c64074, type=INFO, timestamp=2025-05-10T19:01:06.058495900, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:01:09.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=b3305487-642b-4984-beda-87eaa977adcf, type=INFO, timestamp=2025-05-10T19:01:09.060934300, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:01:12.061 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=0eaf4c65-cca4-448a-8bda-793d2624e8f4, type=INFO, timestamp=2025-05-10T19:01:12.061016900, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:01:15.064 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=11b4b8d1-41c7-4819-b333-2892b7f6ba4a, type=UPDATE, timestamp=2025-05-10T19:01:15.064934400, message=테스트 이벤트 메시지: UPDATE}
+2025-05-10 19:01:18.060 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=3c00ac0b-4609-47fe-936a-c854f38d15fb, type=INFO, timestamp=2025-05-10T19:01:18.060214100, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:01:21.065 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=75627d4e-fb70-4e2d-80cc-b547648cabdf, type=INFO, timestamp=2025-05-10T19:01:21.065918700, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:01:24.118 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=0de8d173-b551-4a55-b942-bb5041dc0c77, type=INFO, timestamp=2025-05-10T19:01:24.116939600, message=테스트 이벤트 메시지: INFO}
+2025-05-10 19:01:27.063 [parallel-2] DEBUG c.g.b.h.EventStreamWebSocketHandler - 테스트 이벤트 생성: {id=06b55012-fc47-46b1-ac3b-631f8b9c8ef2, type=UPDATE, timestamp=2025-05-10T19:01:27.063023400, message=테스트 이벤트 메시지: UPDATE}

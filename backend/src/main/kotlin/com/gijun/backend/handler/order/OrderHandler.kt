@@ -20,7 +20,10 @@ import java.net.URI
  * 주문 처리를 위한 핸들러
  */
 @Component
-class OrderHandler(private val orderCommandService: OrderCommandService) {
+class OrderHandler(
+    private val orderCommandService: OrderCommandService,
+    private val orderQueryService: OrderQueryService
+) {
     private val logger = LoggerFactory.getLogger(OrderHandler::class.java)
 
     /**
@@ -157,7 +160,6 @@ class OrderHandler(private val orderCommandService: OrderCommandService) {
         val orderNumber = request.pathVariable("orderNumber")
         logger.info("주문 취소 요청: orderNumber=$orderNumber")
         
-        // 주문 취소 서비스는 아직 미구현
         return request.bodyToMono<Map<String, String>>()
             .flatMap { body -> 
                 val reason = body["reason"] ?: "고객 요청에 의한 취소"
@@ -176,6 +178,103 @@ class OrderHandler(private val orderCommandService: OrderCommandService) {
                 ServerResponse.badRequest().bodyValue(mapOf(
                     "status" to "error",
                     "message" to (e.message ?: "주문 취소 중 오류가 발생했습니다")
+                ))
+            }
+    }
+    
+    /**
+     * 매장 ID로 주문 목록을 조회합니다.
+     */
+    @Operation(
+        summary = "매장별 주문 목록 조회",
+        description = "매장 ID로 대기 중인 주문 목록을 조회합니다",
+        tags = ["orders"],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "주문 목록 조회 성공"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "매장을 찾을 수 없음"
+            )
+        ]
+    )
+    fun getOrdersByStore(request: ServerRequest): Mono<ServerResponse> {
+        val storeId = request.pathVariable("storeId").toLongOrNull()
+        
+        if (storeId == null) {
+            return ServerResponse.badRequest().bodyValue(mapOf(
+                "status" to "error",
+                "message" to "올바른 매장 ID를 입력해주세요"
+            ))
+        }
+        
+        logger.info("매장별 주문 목록 조회 요청: storeId=$storeId")
+        
+        return orderQueryService.getPendingOrdersByStore(storeId)
+            .flatMap { orders ->
+                ServerResponse.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(orders)
+            }
+            .onErrorResume { e ->
+                logger.error("매장별 주문 목록 조회 실패: ${e.message}", e)
+                ServerResponse.badRequest().bodyValue(mapOf(
+                    "status" to "error",
+                    "message" to (e.message ?: "매장별 주문 목록 조회 중 오류가 발생했습니다")
+                ))
+            }
+    }
+    
+    /**
+     * 주문 상태를 업데이트합니다.
+     */
+    @Operation(
+        summary = "주문 상태 업데이트",
+        description = "주문 번호로 주문 상태를 변경합니다",
+        tags = ["orders"],
+        requestBody = RequestBody(
+            required = true,
+            content = [Content(schema = Schema(implementation = Map::class))]
+        ),
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "주문 상태 업데이트 성공"
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "잘못된 요청"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "주문을 찾을 수 없음"
+            )
+        ]
+    )
+    fun updateOrderStatus(request: ServerRequest): Mono<ServerResponse> {
+        val orderNumber = request.pathVariable("orderNumber")
+        logger.info("주문 상태 업데이트 요청: orderNumber=$orderNumber")
+        
+        return request.bodyToMono<Map<String, String>>()
+            .flatMap { body ->
+                val status = body["status"] ?: return@flatMap Mono.error<OrderResponseDto>(
+                    IllegalArgumentException("상태 값이 필요합니다")
+                )
+                
+                orderCommandService.updateOrderStatus(orderNumber, status)
+                    .flatMap { order ->
+                        ServerResponse.ok()
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .bodyValue(order)
+                    }
+            }
+            .onErrorResume { e ->
+                logger.error("주문 상태 업데이트 실패: ${e.message}", e)
+                ServerResponse.badRequest().bodyValue(mapOf(
+                    "status" to "error",
+                    "message" to (e.message ?: "주문 상태 업데이트 중 오류가 발생했습니다")
                 ))
             }
     }

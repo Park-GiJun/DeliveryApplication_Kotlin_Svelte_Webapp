@@ -26,6 +26,9 @@ const menuItems = ref([]);
 // 주문 목록
 const orders = ref([]);
 
+// 대기 중인 주문 목록
+const pendingOrders = ref([]);
+
 // 주문 항목
 const cartItems = ref([]);
 

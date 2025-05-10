@@ -15,28 +15,99 @@ const selectedCustomer = ref(null);
 // 활성 주문
 const activeOrder = ref(null);
 
+// 가게 목록
+const stores = ref([]);
+// 메뉴 목록
+const menuItems = ref([]);
 // 주문 생성 상태
 const orderForm = ref({
-  storeId: 'STORE001',
+  storeId: 1,
   storeName: '맛있는 치킨',
-  items: [
-    { id: 'ITEM001', name: '후라이드 치킨', price: 18000, quantity: 1 },
-    { id: 'ITEM002', name: '콜라', price: 2000, quantity: 1 }
-  ],
-  totalPrice: 20000,
+  items: [],
+  totalPrice: 0,
   deliveryFee: 3000
 });
+
+// 가게 목록 불러오기
+const fetchStores = async () => {
+  try {
+    const response = await axios.get('http://localhost:52001/api/test/data/stores');
+    stores.value = response.data;
+    if (stores.value.length > 0) {
+      selectStore(stores.value[0]);
+    }
+  } catch (error) {
+    console.error('가게 목록을 불러오는데 실패했습니다:', error);
+  }
+};
+
+// 메뉴 목록 불러오기
+const fetchMenuItems = async () => {
+  try {
+    const response = await axios.get('http://localhost:52001/api/test/menus');
+    menuItems.value = response.data;
+    
+    // 기본 메뉴 2개 장바구니에 추가
+    if (menuItems.value.length > 0) {
+      orderForm.value.items = [
+        { 
+          id: menuItems.value[0].id, 
+          name: menuItems.value[0].name, 
+          price: menuItems.value[0].price, 
+          quantity: 1 
+        },
+        {
+          id: menuItems.value[4].id,
+          name: menuItems.value[4].name,
+          price: menuItems.value[4].price,
+          quantity: 1
+        }
+      ];
+      calculateTotalPrice();
+    }
+  } catch (error) {
+    console.error('메뉴 목록을 불러오는데 실패했습니다:', error);
+  }
+};
+
+// 가게 선택
+const selectStore = (store) => {
+  orderForm.value.storeId = store.id;
+  orderForm.value.storeName = store.name;
+};
+
+// 총 가격 계산
+const calculateTotalPrice = () => {
+  orderForm.value.totalPrice = orderForm.value.items.reduce(
+    (sum, item) => sum + (item.price * item.quantity), 0
+  );
+};
 
 // 고객 목록 가져오기
 const fetchCustomers = async () => {
   try {
-    const response = await axios.get('http://localhost:52001/api/customers/findAllCustomer');
+    // 테스트용 고객 데이터 API 사용
+    const response = await axios.get('http://localhost:52001/api/test/data/customers');
     customers.value = response.data;
+    
     if (customers.value.length > 0) {
-      selectCustomer(0);
+      // 저장된 고객 인덱스가 있으면 사용, 없으면 첫 번째 고객 선택
+      const savedIndex = localStorage.getItem('selectedCustomerIndex');
+      const indexToSelect = savedIndex !== null ? 
+        parseInt(savedIndex) : 0;
+      
+      selectCustomer(indexToSelect < customers.value.length ? indexToSelect : 0);
     }
   } catch (error) {
     console.error('고객 목록을 가져오는 중 오류 발생:', error);
+    
+    // 백업 고객 데이터 사용
+    customers.value = [
+      { id: 1, name: '김민준', email: 'kim.minjun@example.com', phone: '010-1111-1111' },
+      { id: 2, name: '이서연', email: 'lee.seoyeon@example.com', phone: '010-2222-2222' },
+      { id: 3, name: '박지훈', email: 'park.jihoon@example.com', phone: '010-3333-3333' }
+    ];
+    selectCustomer(0);
   }
 };
 
@@ -46,31 +117,107 @@ const selectCustomer = (index) => {
   selectedCustomer.value = customers.value[index];
   // 주문 정보 초기화
   activeOrder.value = null;
+  
+  // 로컬 스토리지에 선택한 고객 정보 저장 (페이지 이동 후에도 유지)
+  localStorage.setItem('selectedCustomerIndex', index);
+  
+  console.log(`고객 선택: ${selectedCustomer.value.name} (ID: ${selectedCustomer.value.id})`);
 };
 
 // 주문하기
-const placeOrder = () => {
-  // 여기서 실제로는 서버에 주문을 전송하게 됩니다
-  activeOrder.value = {
-    id: 'ORDER' + Date.now().toString().slice(-6),
-    customerId: selectedCustomer.value.id,
-    customerName: selectedCustomer.value.name,
-    customerAddress: '서울시 강남구', // 예시 데이터
-    storeId: orderForm.value.storeId,
-    storeName: orderForm.value.storeName,
-    items: [...orderForm.value.items],
-    totalPrice: orderForm.value.totalPrice,
-    deliveryFee: orderForm.value.deliveryFee,
-    status: 'CREATED',
-    createdAt: new Date(),
-    riderId: null,
-    estimatedDeliveryTime: null
-  };
+const placeOrder = async () => {
+  try {
+    const orderData = {
+      customerId: selectedCustomer.value.id,
+      storeId: 1, // 예시 데이터 (실제 서비스에서는 사용자가 선택한 매장 ID)
+      addressId: 1, // 예시 데이터 (실제 서비스에서는 사용자가 선택한 주소 ID)
+      items: orderForm.value.items.map(item => ({
+        menuId: Number(item.id.toString().replace('ITEM', '')),
+        quantity: item.quantity,
+        unitPrice: item.price,
+        options: [] // 필요시 옵션도 추가
+      })),
+      requestStore: "고객앱에서 전송한 주문입니다",
+      requestRider: "문 앞에 놓아주세요"
+    };
+    
+    console.log("주문 요청 데이터:", orderData);
+    
+    // 백엔드 API에 주문 전송
+    const response = await axios.post('http://localhost:52001/api/orders', orderData);
+    console.log("주문 응답:", response.data);
+    
+    // 주문 성공 시 activeOrder에 저장
+    activeOrder.value = {
+      id: response.data.orderNumber,
+      customerId: selectedCustomer.value.id,
+      customerName: selectedCustomer.value.name,
+      customerAddress: '서울시 강남구', // 예시 데이터
+      storeId: orderForm.value.storeId,
+      storeName: orderForm.value.storeName,
+      items: [...orderForm.value.items],
+      totalPrice: orderForm.value.totalPrice,
+      deliveryFee: orderForm.value.deliveryFee,
+      status: response.data.status,
+      createdAt: new Date(),
+      riderId: null,
+      estimatedDeliveryTime: response.data.estimatedDeliveryMinutes
+    };
+    
+    alert('주문이 완료되었습니다! 주문번호: ' + response.data.orderNumber);
+  } catch (error) {
+    console.error('주문 처리 중 오류가 발생했습니다:', error);
+    alert('주문 처리 중 오류가 발생했습니다: ' + (error.response?.data?.message || error.message));
+  }
 };
 
 // 주문 취소
-const cancelOrder = () => {
-  activeOrder.value = null;
+const cancelOrder = async () => {
+  if (!activeOrder.value || !activeOrder.value.id) return;
+  
+  try {
+    await axios.post(`http://localhost:52001/api/orders/${activeOrder.value.id}/cancel`, {
+      reason: "고객 요청에 의한 취소"
+    });
+    
+    activeOrder.value.status = 'CANCELLED';
+    setTimeout(() => {
+      activeOrder.value = null;
+    }, 3000);
+    
+    alert('주문이 취소되었습니다.');
+  } catch (error) {
+    console.error('주문 취소 중 오류가 발생했습니다:', error);
+    alert('주문 취소 중 오류가 발생했습니다: ' + (error.response?.data?.message || error.message));
+  }
+};
+
+// WebSocket 메시지 처리
+const handleWebSocketMessage = (message) => {
+  console.log('WebSocket 메시지 수신:', message);
+  
+  // 주문 상태 업데이트 처리
+  if (message.eventType && message.eventType.startsWith('ORDER_') && message.data) {
+    const orderData = message.data;
+    
+    // 현재 활성화된 주문이고, 주문 번호가 일치하는 경우에만 처리
+    if (activeOrder.value && activeOrder.value.id === orderData.orderNumber) {
+      // 주문 상태 업데이트
+      activeOrder.value.status = orderData.status;
+      
+      // 상태에 따른 추가 처리
+      if (orderData.status === 'ASSIGNED' && orderData.riderId) {
+        activeOrder.value.riderId = orderData.riderId;
+      }
+      
+      if (orderData.status === 'DELIVERED') {
+        // 배달 완료 시 3초 후 주문 화면 초기화
+        setTimeout(() => {
+          activeOrder.value = null;
+        }, 3000);
+      }
+    }
+  }
 };
 
 // 주문 상태 텍스트
@@ -85,9 +232,11 @@ const getStatusText = (status) => {
   }
 };
 
-// 컴포넌트 마운트 시 고객 목록 가져오기
+// 컴포넌트 마운트 시 필요한 데이터 가져오기
 onMounted(() => {
   fetchCustomers();
+  fetchStores();
+  fetchMenuItems();
 });
 </script>
 
@@ -209,20 +358,48 @@ onMounted(() => {
     <!-- 주문하기 -->
     <CardComponent v-if="!activeOrder && selectedCustomer" title="주문하기" class="mt-6">
       <div class="bg-white p-4 rounded-lg border">
-        <div class="font-semibold mb-3">{{ orderForm.storeName }}</div>
+        <div class="flex justify-between items-center mb-3">
+          <div class="font-semibold">{{ orderForm.storeName }}</div>
+          <div class="text-sm text-gray-500">
+            <select v-if="stores.length > 0" v-model="orderForm.storeId" @change="store => selectStore(stores.find(s => s.id === store.target.value))" class="border rounded p-1">
+              <option v-for="store in stores" :key="store.id" :value="store.id">{{ store.name }}</option>
+            </select>
+          </div>
+        </div>
         
         <div class="space-y-3 mb-4">
-          <div v-for="(item, index) in orderForm.items" :key="index" class="flex justify-between items-center">
+          <div v-for="(item, index) in orderForm.items" :key="index" class="flex justify-between items-center border-b pb-2">
             <div>
               <div>{{ item.name }}</div>
               <div class="text-sm text-gray-500">{{ item.price.toLocaleString() }}원</div>
             </div>
             <div class="flex items-center">
-              <button class="w-8 h-8 bg-gray-200 rounded-l flex items-center justify-center"
-                      @click="item.quantity > 1 ? item.quantity-- : null">-</button>
+              <button class="w-8 h-8 bg-gray-200 rounded-l flex items-center justify-center" 
+                      @click="() => { if(item.quantity > 1) { item.quantity--; calculateTotalPrice(); } }">-</button>
               <div class="w-8 h-8 bg-gray-100 flex items-center justify-center">{{ item.quantity }}</div>
-              <button class="w-8 h-8 bg-gray-200 rounded-r flex items-center justify-center"
-                      @click="item.quantity++">+</button>
+              <button class="w-8 h-8 bg-gray-200 rounded-r flex items-center justify-center" 
+                      @click="() => { item.quantity++; calculateTotalPrice(); }">+</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 메뉴 추가 -->
+        <div class="mb-4">
+          <div class="text-sm font-medium mb-2">메뉴 추가</div>
+          <div class="grid grid-cols-2 gap-2">
+            <div v-for="menu in menuItems" :key="menu.id" 
+                class="border rounded p-2 text-sm cursor-pointer hover:bg-gray-50"
+                @click="() => { 
+                  const existingItem = orderForm.items.find(i => i.id === menu.id);
+                  if (existingItem) {
+                    existingItem.quantity++;
+                  } else {
+                    orderForm.items.push({ id: menu.id, name: menu.name, price: menu.price, quantity: 1 });
+                  }
+                  calculateTotalPrice();
+                }">
+              <div class="font-medium">{{ menu.name }}</div>
+              <div class="text-gray-500">{{ menu.price.toLocaleString() }}원</div>
             </div>
           </div>
         </div>
@@ -253,7 +430,10 @@ onMounted(() => {
     <!-- 웹소켓 연결 -->
     <div v-if="selectedCustomer" class="mt-6">
       <h2 class="text-xl font-bold mb-3">서버 연결</h2>
-      <WebSocketConsole :url="`${getWsBaseUrl()}/ws/customer/${selectedCustomer.id}`" />
+      <WebSocketConsole 
+        :url="`${getWsBaseUrl()}/ws/customer/${selectedCustomer.id}`"
+        @message-received="handleWebSocketMessage" 
+      />
     </div>
   </div>
 </template>

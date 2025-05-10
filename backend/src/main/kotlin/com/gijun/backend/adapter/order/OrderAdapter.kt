@@ -28,6 +28,9 @@ class OrderAdapter(private val orderHandler: OrderHandler) {
                     GET("/{orderNumber}", orderHandler::getOrderByNumber)
                     GET("/customer/{customerId}", orderHandler::getOrdersByCustomer)
                     POST("/{orderNumber}/cancel", orderHandler::cancelOrder)
+                    // 매장 주문 관련 API 추가
+                    GET("/store/{storeId}", orderHandler::getOrdersByStore)
+                    POST("/{orderNumber}/status", orderHandler::updateOrderStatus)
                 }
             }
         }.also {
