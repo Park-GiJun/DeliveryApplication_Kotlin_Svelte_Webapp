@@ -12,6 +12,7 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.query.Criteria.where
 import org.springframework.data.relational.core.query.Query
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Repository
@@ -77,7 +78,7 @@ class StoreRepositoryImpl(private val template: R2dbcEntityTemplate) : StoreRepo
                             )
                         }
                 } else {
-                    reactor.core.publisher.Flux.empty()
+                    Flux.empty()
                 }
             }
             .collectList()
