@@ -1,7 +1,7 @@
 package com.gijun.backend.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.gijun.backend.application.query.order.OrderQueryServiceImpl
+import com.gijun.backend.application.query.order.OrderQueryService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.socket.WebSocketHandler
@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Component
 class StoreNotificationWebSocketHandler(
     private val objectMapper: ObjectMapper,
-    private val orderQueryService: OrderQueryServiceImpl
+    private val orderQueryService: OrderQueryService
 ) : WebSocketHandler {
     private val logger = LoggerFactory.getLogger(StoreNotificationWebSocketHandler::class.java)
     
@@ -155,6 +155,27 @@ class StoreNotificationWebSocketHandler(
         storeSessionsMap.keys.forEach { storeId ->
             sendEventToStore(storeId, event)
         }
+    }
+    
+    /**
+     * 새 주문이 들어왔을 때 매장에 알림을 보냅니다.
+     */
+    fun sendNotificationForNewOrder(storeId: Long, orderNumber: String) {
+        logger.debug("매장 ${storeId}에 새 주문 알림 전송: $orderNumber")
+        
+        // 주문 정보 가져오기
+        orderQueryService.getPendingOrdersByStore(storeId)
+            .subscribe { orders ->
+                val event = mapOf(
+                    "eventType" to "NEW_ORDER",
+                    "storeId" to storeId,
+                    "timestamp" to LocalDateTime.now().toString(),
+                    "orderNumber" to orderNumber,
+                    "pendingOrders" to orders
+                )
+                
+                sendEventToStore(storeId, event)
+            }
     }
     
     /**

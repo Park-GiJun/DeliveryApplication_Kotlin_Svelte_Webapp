@@ -151,7 +151,10 @@ class OrderCommandServiceImpl(
         logger.debug("매장 주문 큐에 추가: $storeOrdersKey, $orderNumber")
         return redisTemplate.opsForList().rightPush(storeOrdersKey, orderNumber)
             .doOnSuccess { result ->
-                logger.debug("매장 주문 큐에 추가 성공: $storeOrdersKey, $orderNumber, 큐 크기: $result")
+                logger.info("매장 주문 큐에 추가 성공: $storeOrdersKey, $orderNumber, 큐 크기: $result")
+                
+                // 매장에 새 주문 알림 전송 (웹소켓 핸들러로 이벤트 전달)
+                storeNotificationHandler.sendNotificationForNewOrder(storeId, orderNumber)
             }
             .doOnError { error ->
                 logger.error("매장 주문 큐에 추가 중 오류: ${error.message}", error)
